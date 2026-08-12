@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Registration | Esty Academy Consult</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0b2d4d;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            font-size: 12px;
+            font-weight: normal;
+            margin-top: 3px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 50px auto;
+        }
+
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #0b2d4d;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccd4dd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #176b87;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            background: #0b2d4d;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #176b87;
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .login-link a {
+            color: #0b2d4d;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        footer {
+            background: #071d31;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            nav a {
+                margin: 0 6px;
+            }
+
+            .form-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div>
+        <div class="logo">ESTY ACADEMY CONSULT</div>
+        <div class="tagline">
+            Professional Education & Development
+        </div>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#training">Training</a>
+        <a href="index.html#contact">Contact</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="form-card">
+
+        <h1>Teacher Registration</h1>
+
+        <p class="intro">
+            Create your Esty Academy Consult account to access
+            training programmes, assessments and professional development.
+        </p>
+
+
+        <form id="registrationForm">
+
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    placeholder="Enter your full name"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="school">School/Organisation</label>
+
+                <input
+                    type="text"
+                    id="school"
+                    name="school"
+                    placeholder="Enter your school or organisation"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="position">Professional Position</label>
+
+                <select id="position" name="position" required>
+
+                    <option value="">Select your position</option>
+
+                    <option value="Teacher">
+                        Teacher
+                    </option>
+
+                    <option value="Head Teacher">
+                        Head Teacher
+                    </option>
+
+                    <option value="School Administrator">
+                        School Administrator
+                    </option>
+
+                    <option value="School Owner">
+                        School Owner
+                    </option>
+
+                    <option value="Education Officer">
+                        Education Officer
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+                <label for="password">Create Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    minlength="6"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Confirm your password"
+                    minlength="6"
+                    required
+                >
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                Create My Account
+            </button>
+
+        </form>
+
+
+        <div id="message" class="message"></div>
+
+
+        <div class="login-link">
+            Already have an account?
+            <a href="login.html">Login here</a>
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        &copy; 2026 Esty Academy Consult. All Rights Reserved.
+    </p>
+
+    <p>
+        Empowering Teachers. Strengthening Schools. Transforming Education.
+    </p>
+
+</footer>
+
+
+<script>
+
+    const form = document.getElementById("registrationForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const password =
+            document.getElementById("password").value;
+
+        const confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+
+        if (password !== confirmPassword) {
+
+            message.style.display = "block";
+            message.style.background = "#f8d7da";
+            message.style.color = "#842029";
+
+            message.textContent =
+                "The passwords do not match. Please check and try again.";
+
+            return;
+        }
+
+
+        message.style.display = "block";
+        message.style.background = "#fff3cd";
+        message.style.color = "#664d03";
+
+        message.textContent =
+            "Registration form is ready. We will connect it to your secure account system next.";
+
+    });
+
+</script>
+
+</body>
+</html>
