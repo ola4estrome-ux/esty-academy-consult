@@ -350,12 +350,57 @@
 
 <script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL = "https://tsrxkifpkzjaibyujyhk.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dFqg9KQcLeBbz7Nww04KEQ_XB_v38c4";
+
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
     const form = document.getElementById("registrationForm");
     const message = document.getElementById("message");
 
-    form.addEventListener("submit", function(event) {
+
+    function showMessage(text, type) {
+
+        message.style.display = "block";
+        message.textContent = text;
+
+        if (type === "success") {
+            message.style.background = "#d1e7dd";
+            message.style.color = "#0f5132";
+        } else {
+            message.style.background = "#f8d7da";
+            message.style.color = "#842029";
+        }
+    }
+
+
+    form.addEventListener("submit", async function(event) {
 
         event.preventDefault();
+
+
+        const fullName =
+            document.getElementById("fullName").value.trim();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const phone =
+            document.getElementById("phone").value.trim();
+
+        const school =
+            document.getElementById("school").value.trim();
+
+        const position =
+            document.getElementById("position").value;
 
         const password =
             document.getElementById("password").value;
@@ -364,28 +409,129 @@
             document.getElementById("confirmPassword").value;
 
 
+        // Check passwords
+
         if (password !== confirmPassword) {
 
-            message.style.display = "block";
-            message.style.background = "#f8d7da";
-            message.style.color = "#842029";
-
-            message.textContent =
-                "The passwords do not match. Please check and try again.";
+            showMessage(
+                "The passwords do not match. Please check and try again.",
+                "error"
+            );
 
             return;
         }
 
 
-        message.style.display = "block";
-        message.style.background = "#fff3cd";
-        message.style.color = "#664d03";
+        // Check password length
 
-        message.textContent =
-            "Registration form is ready. We will connect it to your secure account system next.";
+        if (password.length < 6) {
+
+            showMessage(
+                "Your password must contain at least 6 characters.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        // Disable button while registering
+
+        const submitButton =
+            form.querySelector(".submit-btn");
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Creating Account...";
+
+
+        try {
+
+            const { data, error } =
+                await supabaseClient.auth.signUp({
+
+                    email: email,
+
+                    password: password,
+
+                    options: {
+
+                        data: {
+                            full_name: fullName,
+                            phone: phone,
+                            school: school,
+                            position: position
+                        }
+
+                    }
+
+                });
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            /*
+             * If email confirmation is enabled in Supabase,
+             * data.session will be null and the teacher will
+             * need to confirm their email.
+             */
+
+            if (data.user && !data.session) {
+
+                showMessage(
+                    "Your account has been created successfully. Please check your email and click the confirmation link before logging in.",
+                    "success"
+                );
+
+            } else if (data.user && data.session) {
+
+                showMessage(
+                    "Registration successful! Your account has been created.",
+                    "success"
+                );
+
+                setTimeout(function() {
+
+                    window.location.href = "dashboard.html";
+
+                }, 2000);
+
+            } else {
+
+                showMessage(
+                    "Your registration could not be completed. Please try again.",
+                    "error"
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error("Registration error:", error);
+
+            let errorMessage =
+                "Registration failed. Please try again.";
+
+            if (error.message) {
+
+                errorMessage = error.message;
+
+            }
+
+            showMessage(errorMessage, "error");
+
+
+        } finally {
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Create My Account";
+
+        }
 
     });
-
 </script>
 
 </body>
