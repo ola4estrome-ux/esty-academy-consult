@@ -443,13 +443,13 @@
             try {
 
                 const { error } =
-                    await supabaseClient.auth.resetPasswordForEmail(
-                        email,
-                        {
-                            redirectTo:
-                                "https://ola4estrome-ux.github.io/esty-academy-consult/login.html"
-                        }
-                    );
+    await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+            redirectTo:
+                "https://ola4estrome-ux.github.io/esty-academy-consult/reset-password.html"
+        }
+    );
 
 
                 if (error) {
