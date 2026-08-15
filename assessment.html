@@ -267,6 +267,107 @@
             }
 
         }
+        .review-btn {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 25px auto 0;
+    padding: 13px 20px;
+    background: #176b87;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.review-btn:hover {
+    background: #0b2d4d;
+}
+
+.review-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.review-header {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+}
+
+.review-header h2 {
+    color: #0b2d4d;
+    margin-bottom: 8px;
+}
+
+.review-header p {
+    color: #666;
+    line-height: 1.5;
+}
+
+.review-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+    margin-bottom: 18px;
+}
+
+.review-question-number {
+    color: #176b87;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.review-question {
+    color: #0b2d4d;
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.review-answer {
+    padding: 12px 15px;
+    border-radius: 7px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.review-correct {
+    background: #d1e7dd;
+    color: #0f5132;
+    border-left: 4px solid #198754;
+}
+
+.review-wrong {
+    background: #f8d7da;
+    color: #842029;
+    border-left: 4px solid #dc3545;
+}
+
+.review-unanswered {
+    background: #fff3cd;
+    color: #664d03;
+    border-left: 4px solid #ffc107;
+}
+
+.review-explanation {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f4f7fb;
+    border-radius: 7px;
+    color: #444;
+    line-height: 1.6;
+}
+
+.review-explanation strong {
+    color: #0b2d4d;
+}
     </style>
 </head>
 
@@ -447,6 +548,7 @@ let remainingSeconds = 0;
 let timerInterval = null;
 
 let submitting = false;
+let submittedAnswers = {};
 
 
 /* =========================
@@ -869,7 +971,7 @@ async function submitAssessment(automatic = false) {
             new FormData(
                 document.getElementById("assessmentForm")
             );
-
+        submittedAnswers = {};
         const answers = [];
 
         for (const question of questions) {
@@ -883,10 +985,13 @@ async function submitAssessment(automatic = false) {
                 continue;
             }
 
-            answers.push({
-                question_id: question.id,
-                option_id: selectedOptionId
-            });
+            submittedAnswers[question.id] =
+    selectedOptionId;
+
+answers.push({
+    question_id: question.id,
+    option_id: selectedOptionId
+});
         }
 
 
@@ -1080,9 +1185,428 @@ function showResult(
         "remarkText"
     ).textContent =
         grade.remark;
+
+
+    /* =========================
+       REVIEW ANSWERS BUTTON
+    ========================= */
+
+    let reviewButton =
+        document.getElementById(
+            "reviewBtn"
+        );
+
+    if (!reviewButton) {
+
+        reviewButton =
+            document.createElement("button");
+
+        reviewButton.id =
+            "reviewBtn";
+
+        reviewButton.type =
+            "button";
+
+        reviewButton.className =
+            "review-btn";
+
+        reviewButton.textContent =
+            "Review Answers";
+
+        reviewButton.onclick =
+            showReview;
+
+        document
+            .getElementById("resultArea")
+            .appendChild(reviewButton);
+    }
+
+}
+/* =========================
+   REVIEW ANSWERS
+========================= */
+
+async function showReview() {
+
+    const reviewButton =
+        document.getElementById("reviewBtn");
+
+    if (reviewButton) {
+        reviewButton.disabled = true;
+        reviewButton.textContent = "Loading Review...";
+    }
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("questions")
+            .select(`
+                id,
+                question_order,
+                question_text,
+                explanation,
+                question_options (
+                    id,
+                    option_text,
+                    option_order,
+                    is_correct
+                )
+            `)
+            .eq(
+                "test_id",
+                TEST_ID
+            )
+            .order(
+                "question_order",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!data || data.length === 0) {
+            throw new Error(
+                "No review questions were found."
+            );
+        }
+
+
+        const resultArea =
+            document.getElementById(
+                "resultArea"
+            );
+
+
+        resultArea.innerHTML = `
+
+            <div class="review-header">
+
+                <h2>
+                    Assessment Review
+                </h2>
+
+                <p>
+                    Review your answers,
+                    the correct answers,
+                    and the explanation
+                    for each question.
+                </p>
+
+            </div>
+
+            <div
+                id="reviewContainer"
+                class="review-container">
+            </div>
+
+            <button
+                type="button"
+                id="backToResultBtn"
+                class="review-btn">
+                Back to Result
+            </button>
+
+        `;
+
+
+        renderReview(data);
+
+
+        document
+            .getElementById(
+                "backToResultBtn"
+            )
+            .addEventListener(
+                "click",
+                restoreResult
+            );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Review loading error:",
+            error
+        );
+
+        showMessage(
+            "Unable to load the answer review. Please try again."
+        );
+
+    }
+
+    finally {
+
+        if (reviewButton) {
+            reviewButton.disabled = false;
+            reviewButton.textContent =
+                "Review Answers";
+        }
+
+    }
 }
 
 
+function renderReview(
+    reviewQuestions
+) {
+
+    const container =
+        document.getElementById(
+            "reviewContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    reviewQuestions.forEach(
+        function(question, index) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "review-card";
+
+
+            const number =
+                document.createElement(
+                    "div"
+                );
+
+            number.className =
+                "review-question-number";
+
+            number.textContent =
+                "Question " +
+                (index + 1);
+
+
+            const questionText =
+                document.createElement(
+                    "div"
+                );
+
+            questionText.className =
+                "review-question";
+
+            questionText.textContent =
+                question.question_text;
+
+
+            card.appendChild(number);
+
+            card.appendChild(
+                questionText
+            );
+
+
+            const options =
+                [...question.question_options]
+                    .sort(
+                        function(a, b) {
+                            return (
+                                a.option_order -
+                                b.option_order
+                            );
+                        }
+                    );
+
+
+            const selectedOptionId =
+                submittedAnswers[
+                    question.id
+                ];
+
+
+            let selectedOptionFound =
+                false;
+
+
+            options.forEach(
+                function(
+                    option,
+                    optionIndex
+                ) {
+
+                    const answer =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    answer.className =
+                        "review-answer";
+
+
+                    const letter =
+                        String.fromCharCode(
+                            65 +
+                            optionIndex
+                        );
+
+
+                    if (
+                        option.is_correct
+                    ) {
+
+                        answer.classList.add(
+                            "review-correct"
+                        );
+
+                    }
+
+                    else if (
+                        option.id ===
+                        selectedOptionId
+                    ) {
+
+                        answer.classList.add(
+                            "review-wrong"
+                        );
+
+                        selectedOptionFound =
+                            true;
+
+                    }
+
+
+                    let status = "";
+
+
+                    if (
+                        option.is_correct
+                    ) {
+
+                        status =
+                            " ✓ Correct Answer";
+
+                    }
+
+                    else if (
+                        option.id ===
+                        selectedOptionId
+                    ) {
+
+                        status =
+                            " ✗ Your Answer";
+
+                    }
+
+
+                    answer.textContent =
+                        letter +
+                        ". " +
+                        option.option_text +
+                        status;
+
+
+                    card.appendChild(
+                        answer
+                    );
+
+                }
+            );
+
+
+            if (
+                !selectedOptionFound &&
+                !options.some(
+                    function(option) {
+                        return (
+                            option.id ===
+                            selectedOptionId
+                        );
+                    }
+                )
+            ) {
+
+                const unanswered =
+                    document.createElement(
+                        "div"
+                    );
+
+                unanswered.className =
+                    "review-answer review-unanswered";
+
+                unanswered.textContent =
+                    "You did not answer this question.";
+
+                card.appendChild(
+                    unanswered
+                );
+
+            }
+
+
+            const explanation =
+                document.createElement(
+                    "div"
+                );
+
+            explanation.className =
+                "review-explanation";
+
+
+            const explanationTitle =
+                document.createElement(
+                    "strong"
+                );
+
+            explanationTitle.textContent =
+                "Explanation: ";
+
+
+            explanation.appendChild(
+                explanationTitle
+            );
+
+
+            explanation.appendChild(
+                document.createTextNode(
+                    question.explanation ||
+                    "No explanation has been provided for this question."
+                )
+            );
+
+
+            card.appendChild(
+                explanation
+            );
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+}
+
+
+function restoreResult() {
+
+    location.reload();
+
+}
 /* =========================
    INITIALIZE
 ========================= */
