@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Assessments | Esty Academy Consult</title>
+    <title>Assessment | Esty Academy Consult</title>
 
     <style>
         * {
@@ -41,44 +41,121 @@
             opacity: 0.9;
         }
 
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .header-btn {
-            background: white;
+        .timer {
+            background: #fff;
             color: #0b2d4d;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
+            padding: 12px 18px;
+            border-radius: 8px;
             font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
+            min-width: 120px;
+            text-align: center;
         }
 
         .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 35px auto;
+            width: 92%;
+            max-width: 950px;
+            margin: 30px auto 50px;
         }
 
-        .page-title {
+        .test-header {
             background: white;
-            padding: 28px;
+            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
             margin-bottom: 25px;
         }
 
-        .page-title h1 {
+        .test-header h1 {
             color: #0b2d4d;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .page-title p {
+        .test-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
             color: #666;
-            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .question-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            color: #176b87;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 17px;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .option:hover {
+            background: #f4f7fb;
+            border-color: #176b87;
+        }
+
+        .option input {
+            margin-top: 4px;
+        }
+
+        .option-label {
+            font-weight: bold;
+            color: #0b2d4d;
+            min-width: 22px;
+        }
+
+        .option-text {
+            line-height: 1.4;
+        }
+
+        .submit-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+
+        .submit-btn {
+            background: #0b2d4d;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #176b87;
+        }
+
+        .submit-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
         }
 
         .message {
@@ -93,80 +170,63 @@
             color: #842029;
         }
 
-        .success {
-            background: #d1e7dd;
-            color: #0f5132;
+        .warning {
+            background: #fff3cd;
+            color: #664d03;
         }
 
         .loading {
             background: white;
             padding: 30px;
             text-align: center;
-            border-radius: 10px;
-            color: #666;
+            border-radius: 12px;
         }
 
-        .tests {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .test-card {
+        .result {
+            display: none;
             background: white;
-            padding: 24px;
-            border-radius: 10px;
+            padding: 35px;
+            border-radius: 12px;
             box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+            text-align: center;
         }
 
-        .test-card h3 {
+        .result h2 {
             color: #0b2d4d;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        .test-card p {
-            color: #666;
-            line-height: 1.5;
-            font-size: 14px;
-            margin-bottom: 15px;
+        .result-score {
+            font-size: 45px;
+            font-weight: bold;
+            color: #176b87;
+            margin: 15px 0;
         }
 
-        .test-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 18px;
+        .result-details {
+            margin: 20px 0;
+            line-height: 2;
+            color: #555;
         }
 
-        .badge {
-            background: #eef3f7;
-            color: #0b2d4d;
-            padding: 6px 9px;
-            border-radius: 5px;
-            font-size: 12px;
-        }
-
-        .start-btn {
-            width: 100%;
-            border: none;
-            background: #0b2d4d;
-            color: white;
-            padding: 11px;
-            border-radius: 6px;
-            cursor: pointer;
+        .passed {
+            color: #198754;
             font-weight: bold;
         }
 
-        .start-btn:hover {
-            background: #176b87;
+        .failed {
+            color: #dc3545;
+            font-weight: bold;
         }
 
-        .empty {
-            background: white;
-            padding: 35px;
-            border-radius: 10px;
-            text-align: center;
-            color: #666;
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #0b2d4d;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
         }
 
         footer {
@@ -174,7 +234,6 @@
             color: white;
             text-align: center;
             padding: 25px;
-            margin-top: 50px;
             font-size: 13px;
         }
 
@@ -182,25 +241,31 @@
             margin-top: 6px;
         }
 
-        @media (max-width: 900px) {
-            .tests {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
         @media (max-width: 600px) {
+
             header {
                 flex-direction: column;
                 text-align: center;
             }
 
             .container {
-                width: 92%;
+                width: 94%;
+                margin: 20px auto 40px;
             }
 
-            .tests {
-                grid-template-columns: 1fr;
+            .question-card {
+                padding: 20px;
             }
+
+            .test-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .timer {
+                width: 100%;
+            }
+
         }
     </style>
 </head>
@@ -219,16 +284,8 @@
         </div>
     </div>
 
-    <div class="header-buttons">
-
-        <a href="dashboard.html" class="header-btn">
-            Dashboard
-        </a>
-
-        <button id="logoutBtn" class="header-btn">
-            Logout
-        </button>
-
+    <div id="timer" class="timer">
+        Loading...
     </div>
 
 </header>
@@ -236,30 +293,112 @@
 
 <main class="container">
 
-    <section class="page-title">
+    <div id="message" class="message"></div>
 
-        <h1>
-            📝 Assessment Centre
-        </h1>
+    <div id="loading" class="loading">
+        Loading assessment...
+    </div>
 
-        <p>
-            Take available assessments, practise examination questions,
-            receive grades and review your performance.
-        </p>
+
+    <section id="assessmentArea" style="display:none;">
+
+        <div class="test-header">
+
+            <h1 id="testTitle">
+                Assessment
+            </h1>
+
+            <div class="test-info">
+
+                <span>
+                    Questions: <strong id="questionCount">0</strong>
+                </span>
+
+                <span>
+                    Duration: <strong id="duration">0</strong> minutes
+                </span>
+
+                <span>
+                    Pass Mark: <strong id="passMark">0%</strong>
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <form id="assessmentForm">
+
+            <div id="questionsContainer"></div>
+
+
+            <div class="submit-section">
+
+                <p style="margin-bottom:15px;">
+                    Make sure you have answered all questions before submitting.
+                </p>
+
+                <button
+                    type="submit"
+                    id="submitBtn"
+                    class="submit-btn">
+                    Submit Assessment
+                </button>
+
+            </div>
+
+        </form>
 
     </section>
 
 
-    <div id="message" class="message"></div>
+    <section id="resultArea" class="result">
 
+        <h2>Assessment Completed</h2>
 
-    <div id="loading" class="loading">
-        Loading available assessments...
-    </div>
+        <div id="resultScore" class="result-score">
+            0%
+        </div>
 
+        <div class="result-details">
 
-    <section id="testsContainer" class="tests"></section>
+            <div>
+                Score:
+                <strong id="scoreText">0 / 30</strong>
+            </div>
 
+            <div>
+                Percentage:
+                <strong id="percentageText">0%</strong>
+            </div>
+
+            <div>
+                Pass Mark:
+                <strong id="resultPassMark">0%</strong>
+            </div>
+
+            <div>
+                Grade:
+                <strong id="gradeText">-</strong>
+            </div>
+
+            <div>
+                Result:
+                <strong id="passedText">-</strong>
+            </div>
+
+            <div>
+                Remark:
+                <strong id="remarkText">-</strong>
+            </div>
+
+        </div>
+
+        <a href="dashboard.html" class="back-btn">
+            Return to Dashboard
+        </a>
+
+    </section>
 
 </main>
 
@@ -279,243 +418,851 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
-    const SUPABASE_URL =
-        "https://tsrxkifpkzjaibyujyhk.supabase.co";
+const SUPABASE_URL =
+    "https://tsrxkifpkzjaibyujyhk.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_dFqg9KQcLeBbz7Nww04KEQ_XB_v38c4";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
 
 
-    const SUPABASE_PUBLISHABLE_KEY =
-        "sb_publishable_dFqg9KQcLeBbz7Nww04KEQ_XB_v38c4";
+const TEST_ID =
+    "295d3abb-60ee-482c-a743-60a1e4639de6";
 
 
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-        );
+let currentUser = null;
+let currentTest = null;
+let questions = [];
+let attemptId = null;
+
+let remainingSeconds = 0;
+let timerInterval = null;
+
+let submitting = false;
 
 
-    const loading =
-        document.getElementById("loading");
+/* =========================
+   MESSAGE
+========================= */
 
-
-    const testsContainer =
-        document.getElementById("testsContainer");
-
+function showMessage(text, type = "error") {
 
     const message =
         document.getElementById("message");
 
+    message.textContent = text;
+    message.className =
+        "message " + type;
 
-    function showMessage(text, type) {
+    message.style.display = "block";
+}
 
-        message.className =
-            "message " + type;
 
-        message.textContent =
-            text;
+function hideMessage() {
 
-        message.style.display =
-            "block";
+    document.getElementById("message")
+        .style.display = "none";
 
+}
+
+
+/* =========================
+   LOAD USER
+========================= */
+
+async function loadUser() {
+
+    const {
+        data: {
+            session
+        },
+        error
+    } = await supabaseClient.auth.getSession();
+
+    if (error) {
+        throw error;
     }
 
-
-    async function loadAssessments() {
-
-        try {
-
-            const {
-                data: {
-                    session
-                },
-                error: sessionError
-            } =
-                await supabaseClient.auth.getSession();
-
-
-            if (sessionError) {
-                throw sessionError;
-            }
-
-
-            if (!session) {
-
-                window.location.href =
-                    "login.html";
-
-                return;
-
-            }
-
-
-            const {
-                data: tests,
-                error: testsError
-            } =
-                await supabaseClient
-                    .from("tests")
-                    .select(`
-                        id,
-                        title,
-                        description,
-                        duration_minutes,
-                        pass_mark,
-                        total_questions,
-                        is_published,
-                        course_id
-                    `)
-                    .eq("is_published", true)
-                    .order("created_at", {
-                        ascending: false
-                    });
-
-
-            if (testsError) {
-                throw testsError;
-            }
-
-
-            loading.style.display =
-                "none";
-
-
-            if (!tests || tests.length === 0) {
-
-                testsContainer.innerHTML = `
-                    <div class="empty">
-                        <h3>No assessments available yet.</h3>
-                        <p>
-                            Published assessments will appear here
-                            when they are made available.
-                        </p>
-                    </div>
-                `;
-
-                return;
-
-            }
-
-
-            testsContainer.innerHTML =
-                tests.map(test => `
-
-                    <article class="test-card">
-
-                        <h3>
-                            ${escapeHtml(test.title)}
-                        </h3>
-
-                        <p>
-                            ${escapeHtml(
-                                test.description ||
-                                "Assessment available through Esty Academy Consult."
-                            )}
-                        </p>
-
-                        <div class="test-info">
-
-                            <span class="badge">
-                                ⏱ ${test.duration_minutes} mins
-                            </span>
-
-                            <span class="badge">
-                                🎯 Pass: ${test.pass_mark}%
-                            </span>
-
-                            <span class="badge">
-                                📝 ${test.total_questions || 0} questions
-                            </span>
-
-                        </div>
-
-                        <button
-                            class="start-btn"
-                            onclick="startAssessment('${test.id}')"
-                        >
-                            Start Assessment
-                        </button>
-
-                    </article>
-
-                `).join("");
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Assessment loading error:",
-                error
-            );
-
-            loading.style.display =
-                "none";
-
-            showMessage(
-                "Unable to load assessments. Please try again.",
-                "error"
-            );
-
-        }
-
-    }
-
-
-    function escapeHtml(value) {
-
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    function startAssessment(testId) {
+    if (!session) {
 
         window.location.href =
-            "take-test.html?test=" +
-            encodeURIComponent(testId);
+            "login.html";
 
+        return false;
+    }
+
+    currentUser =
+        session.user;
+
+    return true;
+}
+
+
+/* =========================
+   LOAD TEST
+========================= */
+
+async function loadTest() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("tests")
+        .select("*")
+        .eq("id", TEST_ID)
+        .single();
+
+    if (error) {
+        throw error;
+    }
+
+    currentTest = data;
+
+    document.getElementById("testTitle")
+        .textContent = data.title;
+
+    document.getElementById("questionCount")
+        .textContent = data.total_questions;
+
+    document.getElementById("duration")
+        .textContent = data.duration_minutes;
+
+    document.getElementById("passMark")
+        .textContent = data.pass_mark + "%";
+
+    remainingSeconds =
+        data.duration_minutes * 60;
+}
+
+
+/* =========================
+   LOAD QUESTIONS
+========================= */
+
+async function loadQuestions() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("questions")
+        .select(`
+            id,
+            question_order,
+            question_text,
+            question_options (
+                id,
+                option_text,
+                option_order
+            )
+        `)
+        .eq("test_id", TEST_ID)
+        .order("question_order");
+
+    if (error) {
+        throw error;
+    }
+
+    questions = data || [];
+
+    if (
+        questions.length !==
+        currentTest.total_questions
+    ) {
+
+        throw new Error(
+            "The number of questions does not match the assessment settings."
+        );
+    }
+
+    renderQuestions();
+}
+
+
+/* =========================
+   RENDER QUESTIONS
+========================= */
+
+function renderQuestions() {
+
+    const container =
+        document.getElementById(
+            "questionsContainer"
+        );
+
+    container.innerHTML = "";
+
+    questions.forEach(
+        (question, index) => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "question-card";
+
+            const number =
+                document.createElement("div");
+
+            number.className =
+                "question-number";
+
+            number.textContent =
+                "Question " +
+                (index + 1);
+
+            const text =
+                document.createElement("div");
+
+            text.className =
+                "question-text";
+
+            text.textContent =
+                question.question_text;
+
+            card.appendChild(number);
+            card.appendChild(text);
+
+
+            const options =
+                [...question.question_options]
+                    .sort(
+                        (a, b) =>
+                            a.option_order -
+                            b.option_order
+                    );
+
+
+            options.forEach(
+                (option, optionIndex) => {
+
+                    const label =
+                        document.createElement("label");
+
+                    label.className =
+                        "option";
+
+                    const input =
+                        document.createElement("input");
+
+                    input.type =
+                        "radio";
+
+                    input.name =
+                        "question_" +
+                        question.id;
+
+                    input.value =
+                        option.id;
+
+                    const optionLetter =
+                        document.createElement("span");
+
+                    optionLetter.className =
+                        "option-label";
+
+                    optionLetter.textContent =
+                        String.fromCharCode(
+                            65 + optionIndex
+                        ) + ".";
+
+
+                    const optionText =
+                        document.createElement("span");
+
+                    optionText.className =
+                        "option-text";
+
+                    optionText.textContent =
+                        option.option_text;
+
+                    label.appendChild(input);
+                    label.appendChild(optionLetter);
+                    label.appendChild(optionText);
+
+                    card.appendChild(label);
+
+                }
+            );
+
+            container.appendChild(card);
+
+        }
+    );
+}
+
+
+/* =========================
+   CREATE ATTEMPT
+========================= */
+
+async function createAttempt() {
+
+    const {
+        data: existingAttempts,
+        error: existingError
+    } = await supabaseClient
+        .from("attempts")
+        .select("attempt_number")
+        .eq("user_id", currentUser.id)
+        .eq("test_id", TEST_ID)
+        .order(
+            "attempt_number",
+            {
+                ascending: false
+            }
+        )
+        .limit(1);
+
+    if (existingError) {
+        throw existingError;
+    }
+
+    let attemptNumber = 1;
+
+    if (
+        existingAttempts &&
+        existingAttempts.length > 0
+    ) {
+
+        attemptNumber =
+            existingAttempts[0].attempt_number + 1;
     }
 
 
-    document
-        .getElementById("logoutBtn")
-        .addEventListener(
-            "click",
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("attempts")
+        .insert({
+
+            user_id:
+                currentUser.id,
+
+            test_id:
+                TEST_ID,
+
+            attempt_number:
+                attemptNumber,
+
+            status:
+                "in_progress"
+
+        })
+        .select()
+        .single();
+
+    if (error) {
+        throw error;
+    }
+
+    attemptId =
+        data.id;
+}
+
+
+/* =========================
+   TIMER
+========================= */
+
+function startTimer() {
+
+    updateTimerDisplay();
+
+    timerInterval =
+        setInterval(
             async function() {
 
-                const {
-                    error
-                } =
-                    await supabaseClient.auth.signOut();
+                remainingSeconds--;
 
+                updateTimerDisplay();
 
-                if (error) {
+                if (
+                    remainingSeconds <= 0
+                ) {
 
-                    showMessage(
-                        "Unable to log out. Please try again.",
-                        "error"
+                    clearInterval(
+                        timerInterval
                     );
 
-                    return;
+                    showMessage(
+                        "Time is up. Your assessment will be submitted automatically.",
+                        "warning"
+                    );
 
+                    await submitAssessment(
+                        true
+                    );
                 }
 
+            },
+            1000
+        );
+}
 
-                window.location.href =
-                    "login.html";
 
-            }
+function updateTimerDisplay() {
+
+    const timer =
+        document.getElementById(
+            "timer"
         );
 
+    const minutes =
+        Math.floor(
+            remainingSeconds / 60
+        );
 
-    loadAssessments();
+    const seconds =
+        remainingSeconds % 60;
+
+    timer.textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+}
+
+
+/* =========================
+   SUBMIT ASSESSMENT
+========================= */
+
+async function submitAssessment(
+    automatic = false
+) {
+
+    if (submitting) {
+        return;
+    }
+
+    submitting = true;
+
+    document.getElementById(
+        "submitBtn"
+    ).disabled = true;
+
+
+    if (timerInterval) {
+
+        clearInterval(
+            timerInterval
+        );
+    }
+
+
+    if (!automatic) {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to submit this assessment?"
+            );
+
+        if (!confirmed) {
+
+            submitting = false;
+
+            document.getElementById(
+                "submitBtn"
+            ).disabled = false;
+
+            startTimer();
+
+            return;
+        }
+    }
+
+
+    try {
+
+        const formData =
+            new FormData(
+                document.getElementById(
+                    "assessmentForm"
+                )
+            );
+
+
+        let correctAnswers = 0;
+        let answeredCount = 0;
+
+
+        for (
+            const question of questions
+        ) {
+
+            const selectedOptionId =
+                formData.get(
+                    "question_" +
+                    question.id
+                );
+
+
+            if (!selectedOptionId) {
+                continue;
+            }
+
+            answeredCount++;
+
+
+            const selectedOption =
+                question.question_options
+                    .find(
+                        option =>
+                            option.id ===
+                            selectedOptionId
+                    );
+
+
+            let isCorrect =
+                false;
+
+            if (
+                selectedOption &&
+                selectedOption.is_correct
+            ) {
+
+                isCorrect = true;
+                correctAnswers++;
+
+            }
+
+
+            const {
+                error
+            } = await supabaseClient
+                .from("attempt_answers")
+                .insert({
+
+                    attempt_id:
+                        attemptId,
+
+                    question_id:
+                        question.id,
+
+                    selected_option_id:
+                        selectedOptionId,
+
+                    is_correct:
+                        isCorrect,
+
+                    points_awarded:
+                        isCorrect ? 1 : 0
+
+                });
+
+
+            if (error) {
+                throw error;
+            }
+
+        }
+
+
+        const totalQuestions =
+            questions.length;
+
+        const percentage =
+            (
+                correctAnswers /
+                totalQuestions
+            ) * 100;
+
+
+        const passed =
+            percentage >=
+            Number(
+                currentTest.pass_mark
+            );
+
+
+        const grade =
+            getGrade(
+                percentage
+            );
+
+
+        const {
+            error: attemptError
+        } = await supabaseClient
+            .from("attempts")
+            .update({
+
+                submitted_at:
+                    new Date().toISOString(),
+
+                score:
+                    correctAnswers,
+
+                percentage:
+                    percentage,
+
+                passed:
+                    passed,
+
+                status:
+                    "submitted"
+
+            })
+            .eq(
+                "id",
+                attemptId
+            );
+
+
+        if (attemptError) {
+            throw attemptError;
+        }
+
+
+        showResult(
+            correctAnswers,
+            totalQuestions,
+            percentage,
+            passed,
+            grade
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Submission error:",
+            error
+        );
+
+        showMessage(
+            "There was a problem submitting your assessment. Please try again."
+        );
+
+        submitting = false;
+
+        document.getElementById(
+            "submitBtn"
+        ).disabled = false;
+
+        startTimer();
+    }
+
+}
+
+
+/* =========================
+   GRADE
+========================= */
+
+function getGrade(
+    percentage
+) {
+
+    if (percentage >= 80) {
+
+        return {
+            grade: "A",
+            remark: "Excellent"
+        };
+
+    }
+
+    if (percentage >= 70) {
+
+        return {
+            grade: "B",
+            remark: "Very Good"
+        };
+
+    }
+
+    if (percentage >= 60) {
+
+        return {
+            grade: "C",
+            remark: "Good"
+        };
+
+    }
+
+    if (percentage >= 40) {
+
+        return {
+            grade: "D",
+            remark: "Fair"
+        };
+
+    }
+
+    return {
+        grade: "F",
+        remark: "Poor"
+    };
+
+}
+
+
+/* =========================
+   SHOW RESULT
+========================= */
+
+function showResult(
+    score,
+    total,
+    percentage,
+    passed,
+    grade
+) {
+
+    document.getElementById(
+        "assessmentArea"
+    ).style.display = "none";
+
+    document.getElementById(
+        "timer"
+    ).style.display = "none";
+
+    document.getElementById(
+        "resultArea"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "resultScore"
+    ).textContent =
+        percentage.toFixed(2) + "%";
+
+
+    document.getElementById(
+        "scoreText"
+    ).textContent =
+        score + " / " + total;
+
+
+    document.getElementById(
+        "percentageText"
+    ).textContent =
+        percentage.toFixed(2) + "%";
+
+
+    document.getElementById(
+        "resultPassMark"
+    ).textContent =
+        currentTest.pass_mark + "%";
+
+
+    document.getElementById(
+        "gradeText"
+    ).textContent =
+        grade.grade;
+
+
+    const passedText =
+        document.getElementById(
+            "passedText"
+        );
+
+    passedText.textContent =
+        passed ? "PASSED" : "FAILED";
+
+    passedText.className =
+        passed
+            ? "passed"
+            : "failed";
+
+
+    document.getElementById(
+        "remarkText"
+    ).textContent =
+        grade.remark;
+}
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+async function initialize() {
+
+    try {
+
+        const loggedIn =
+            await loadUser();
+
+        if (!loggedIn) {
+            return;
+        }
+
+        await loadTest();
+
+        await loadQuestions();
+
+        await createAttempt();
+
+
+        document.getElementById(
+            "loading"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "assessmentArea"
+        ).style.display = "block";
+
+
+        startTimer();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Assessment initialization error:",
+            error
+        );
+
+        document.getElementById(
+            "loading"
+        ).style.display = "none";
+
+        showMessage(
+            "Unable to load the assessment. Please try again."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   FORM EVENT
+========================= */
+
+document
+    .getElementById(
+        "assessmentForm"
+    )
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            submitAssessment(false);
+
+        }
+    );
+
+
+initialize();
 
 </script>
 
