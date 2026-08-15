@@ -448,22 +448,31 @@
             container.innerHTML = "";
 
 
-            if (
-                !modules ||
-                modules.length === 0
-            ) {
+           if (
+    !modules ||
+    modules.length === 0
+) {
 
-                container.innerHTML = `
-                    <div class="empty">
-                        No modules are available
-                        for this course yet.
-                    </div>
-                `;
+    container.innerHTML = `
+        <div class="empty">
+            No modules are available
+            for this course yet.
 
-                return;
+            <br><br>
 
-            }
+            Debug Course ID:
+            ${escapeHtml(COURSE_ID)}
 
+            <br>
+
+            Modules received:
+            ${modules ? modules.length : "null"}
+        </div>
+    `;
+
+    return;
+
+}
 
             for (
                 const module of modules
