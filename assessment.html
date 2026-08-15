@@ -711,7 +711,7 @@ async function createAttempt() {
         data: existingAttempts,
         error: existingError
     } = await supabaseClient
-        .from("attempts")
+        .from("test_attempts")
         .select("attempt_number")
         .eq("user_id", currentUser.id)
         .eq("test_id", TEST_ID)
@@ -743,7 +743,7 @@ async function createAttempt() {
         data,
         error
     } = await supabaseClient
-        .from("attempts")
+        .from("test_attempts")
         .insert({
 
             user_id:
@@ -838,199 +838,98 @@ function updateTimerDisplay() {
    SUBMIT ASSESSMENT
 ========================= */
 
-async function submitAssessment(
-    automatic = false
-) {
+async function submitAssessment(automatic = false) {
 
     if (submitting) {
         return;
     }
 
-    submitting = true;
-
-    document.getElementById(
-        "submitBtn"
-    ).disabled = true;
-
-
-    if (timerInterval) {
-
-        clearInterval(
-            timerInterval
-        );
-    }
-
-
     if (!automatic) {
 
-        const confirmed =
-            confirm(
-                "Are you sure you want to submit this assessment?"
-            );
+        const confirmed = confirm(
+            "Are you sure you want to submit this assessment?"
+        );
 
         if (!confirmed) {
-
-            submitting = false;
-
-            document.getElementById(
-                "submitBtn"
-            ).disabled = false;
-
-            startTimer();
-
             return;
         }
     }
 
+    submitting = true;
+
+    document.getElementById("submitBtn").disabled = true;
+
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
 
     try {
 
         const formData =
             new FormData(
-                document.getElementById(
-                    "assessmentForm"
-                )
+                document.getElementById("assessmentForm")
             );
 
+        const answers = [];
 
-        let correctAnswers = 0;
-        let answeredCount = 0;
-
-
-        for (
-            const question of questions
-        ) {
+        for (const question of questions) {
 
             const selectedOptionId =
                 formData.get(
-                    "question_" +
-                    question.id
+                    "question_" + question.id
                 );
-
 
             if (!selectedOptionId) {
                 continue;
             }
 
-            answeredCount++;
-
-
-            const selectedOption =
-                question.question_options
-                    .find(
-                        option =>
-                            option.id ===
-                            selectedOptionId
-                    );
-
-
-            let isCorrect =
-                false;
-
-            if (
-                selectedOption &&
-                selectedOption.is_correct
-            ) {
-
-                isCorrect = true;
-                correctAnswers++;
-
-            }
-
-
-            const {
-                error
-            } = await supabaseClient
-                .from("attempt_answers")
-                .insert({
-
-                    attempt_id:
-                        attemptId,
-
-                    question_id:
-                        question.id,
-
-                    selected_option_id:
-                        selectedOptionId,
-
-                    is_correct:
-                        isCorrect,
-
-                    points_awarded:
-                        isCorrect ? 1 : 0
-
-                });
-
-
-            if (error) {
-                throw error;
-            }
-
+            answers.push({
+                question_id: question.id,
+                option_id: selectedOptionId
+            });
         }
 
 
-        const totalQuestions =
-            questions.length;
-
-        const percentage =
-            (
-                correctAnswers /
-                totalQuestions
-            ) * 100;
-
-
-        const passed =
-            percentage >=
-            Number(
-                currentTest.pass_mark
-            );
-
-
-        const grade =
-            getGrade(
-                percentage
-            );
-
+        /*
+         * Send the selected answers to Supabase.
+         *
+         * The database, NOT the browser,
+         * determines which answers are correct.
+         */
 
         const {
-            error: attemptError
-        } = await supabaseClient
-            .from("attempts")
-            .update({
+            data,
+            error
+        } = await supabaseClient.rpc(
+            "submit_test_attempt",
+            {
+                p_attempt_id: attemptId,
+                p_answers: answers
+            }
+        );
 
-                submitted_at:
-                    new Date().toISOString(),
 
-                score:
-                    correctAnswers,
+        if (error) {
+            throw error;
+        }
 
-                percentage:
-                    percentage,
 
-                passed:
-                    passed,
-
-                status:
-                    "submitted"
-
-            })
-            .eq(
-                "id",
-                attemptId
+        if (!data || !data.success) {
+            throw new Error(
+                "The assessment could not be submitted."
             );
-
-
-        if (attemptError) {
-            throw attemptError;
         }
 
 
         showResult(
-            correctAnswers,
-            totalQuestions,
-            percentage,
-            passed,
-            grade
+            Number(data.score),
+            Number(data.total_questions),
+            Number(data.percentage),
+            data.passed,
+            {
+                grade: data.grade,
+                remark: data.grade_remark
+            }
         );
 
     }
@@ -1054,9 +953,7 @@ async function submitAssessment(
 
         startTimer();
     }
-
 }
-
 
 /* =========================
    GRADE
