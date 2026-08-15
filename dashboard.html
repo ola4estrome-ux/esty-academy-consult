@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Teacher Dashboard | Esty Academy Consult</title>
+    <title>Dashboard | Esty Academy Consult</title>
 
     <style>
         * {
@@ -57,8 +57,8 @@
 
         .container {
             width: 90%;
-            max-width: 1100px;
-            margin: 40px auto;
+            max-width: 1150px;
+            margin: 35px auto;
         }
 
         .welcome {
@@ -76,6 +76,7 @@
 
         .welcome p {
             color: #666;
+            line-height: 1.6;
         }
 
         .profile-card {
@@ -116,9 +117,19 @@
             color: #222;
         }
 
+        .section {
+            margin-bottom: 35px;
+        }
+
         .section-title {
             color: #0b2d4d;
             margin-bottom: 18px;
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 18px;
+            line-height: 1.5;
         }
 
         .cards {
@@ -134,11 +145,12 @@
             box-shadow: 0 4px 18px rgba(0,0,0,0.06);
             text-decoration: none;
             color: #222;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .card:hover {
             transform: translateY(-3px);
+            box-shadow: 0 7px 22px rgba(0,0,0,0.09);
         }
 
         .card-icon {
@@ -158,7 +170,7 @@
         }
 
         .coming-soon {
-            margin-top: 30px;
+            margin-top: 20px;
             background: #fff;
             border-left: 5px solid #176b87;
             padding: 20px;
@@ -173,6 +185,10 @@
         .coming-soon p {
             color: #666;
             line-height: 1.5;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         .message {
@@ -197,7 +213,7 @@
             margin-top: 6px;
         }
 
-        @media (max-width: 850px) {
+        @media (max-width: 900px) {
 
             .cards {
                 grid-template-columns: repeat(2, 1fr);
@@ -259,19 +275,22 @@
     <div id="message" class="message"></div>
 
 
+    <!-- WELCOME -->
+
     <section class="welcome">
 
         <h1>
-            Welcome, <span id="teacherName">Teacher</span>!
+            Welcome, <span id="teacherName">Learner</span>!
         </h1>
 
-        <p>
-            Welcome to your Esty Academy Consult professional
-            development dashboard.
+        <p id="welcomeText">
+            Welcome to your Esty Academy Consult learning dashboard.
         </p>
 
     </section>
 
+
+    <!-- PROFILE -->
 
     <section class="profile-card">
 
@@ -348,89 +367,301 @@
     </section>
 
 
-    <h2 class="section-title">
-        My Learning
-    </h2>
+    <!-- TEACHER / PROFESSIONAL CENTRE -->
 
+    <section id="teacherCentre" class="section hidden">
 
-    <section class="cards">
+        <h2 class="section-title">
+            👨‍🏫 Teacher & School Professional Centre
+        </h2>
 
-        <a href="#" class="card">
+        <p class="section-description">
+            Develop professional skills, improve classroom practice,
+            strengthen school leadership and access practical training
+            resources.
+        </p>
 
-            <div class="card-icon">
-                📚
-            </div>
+        <div class="cards">
 
-            <h3>My Training</h3>
+            <a href="#" class="card">
+                <div class="card-icon">📚</div>
+                <h3>Teacher Training</h3>
+                <p>
+                    Professional ethics, lesson delivery,
+                    classroom management and other teacher-development
+                    programmes.
+                </p>
+            </a>
 
-            <p>
-                Access your professional development
-                training programmes.
-            </p>
+            <a href="#" class="card">
+                <div class="card-icon">🏫</div>
+                <h3>School Leadership</h3>
+                <p>
+                    Training for school owners, heads, administrators
+                    and management teams.
+                </p>
+            </a>
 
-        </a>
+            <a href="#" class="card">
+                <div class="card-icon">🧠</div>
+                <h3>Professional Skills</h3>
+                <p>
+                    Emotional intelligence, communication,
+                    learner engagement and professional effectiveness.
+                </p>
+            </a>
 
+            <a href="#" class="card">
+                <div class="card-icon">📈</div>
+                <h3>School Growth</h3>
+                <p>
+                    Strategies for learner enrollment, parent
+                    engagement and sustainable school development.
+                </p>
+            </a>
 
-        <a href="#" class="card">
-
-            <div class="card-icon">
-                📝
-            </div>
-
-            <h3>Assessments</h3>
-
-            <p>
-                Take tests and assessments after completing
-                your training.
-            </p>
-
-        </a>
-
-
-        <a href="#" class="card">
-
-            <div class="card-icon">
-                📊
-            </div>
-
-            <h3>My Results</h3>
-
-            <p>
-                View your assessment scores and
-                performance history.
-            </p>
-
-        </a>
-
-
-        <a href="#" class="card">
-
-            <div class="card-icon">
-                🏆
-            </div>
-
-            <h3>Certificates</h3>
-
-            <p>
-                Access certificates earned through
-                completed programmes.
-            </p>
-
-        </a>
+        </div>
 
     </section>
 
 
+    <!-- LEARNING CENTRE -->
+
+    <section id="learningCentre" class="section">
+
+        <h2 class="section-title">
+            🎓 Learning Centre
+        </h2>
+
+        <p class="section-description">
+            Access lessons, practice questions, examinations and
+            assessments designed for different levels of learners.
+        </p>
+
+        <div class="cards">
+
+            <a href="#" class="card">
+                <div class="card-icon">📖</div>
+                <h3>My Courses</h3>
+                <p>
+                    Access enrolled courses, lessons and learning
+                    materials.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">🧮</div>
+                <h3>Topic Practice</h3>
+                <p>
+                    Practise questions on a selected subject or topic
+                    and receive immediate feedback.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">🎥</div>
+                <h3>Video Lessons</h3>
+                <p>
+                    Learn through structured video lessons and
+                    educational demonstrations.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">📊</div>
+                <h3>My Results</h3>
+                <p>
+                    View scores, grades, explanations and performance
+                    history.
+                </p>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXAMINATION CENTRE -->
+
+    <section id="examCentre" class="section">
+
+        <h2 class="section-title">
+            📝 Examination & Practice Centre
+        </h2>
+
+        <p class="section-description">
+            Prepare for major examinations and practise questions
+            with automatic grading and explanations.
+        </p>
+
+        <div class="cards">
+
+            <a href="#" class="card">
+                <div class="card-icon">🎯</div>
+                <h3>JAMB Practice</h3>
+                <p>
+                    Practise JAMB questions, receive grades and see
+                    explanations for answers.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">📘</div>
+                <h3>WAEC Practice</h3>
+                <p>
+                    Practise WAEC questions with scoring,
+                    explanations and performance tracking.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">📗</div>
+                <h3>NECO Practice</h3>
+                <p>
+                    Prepare with NECO-style practice questions and
+                    detailed feedback.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">🏫</div>
+                <h3>BECE Practice</h3>
+                <p>
+                    Prepare junior secondary learners for BECE and
+                    related assessments.
+                </p>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENTREPRENEURSHIP CENTRE -->
+
+    <section id="businessCentre" class="section">
+
+        <h2 class="section-title">
+            💼 Entrepreneurship & Small Business Centre
+        </h2>
+
+        <p class="section-description">
+            Practical training for entrepreneurs, small-business
+            owners and aspiring business professionals.
+        </p>
+
+        <div class="cards">
+
+            <a href="#" class="card">
+                <div class="card-icon">🚀</div>
+                <h3>Start a Business</h3>
+                <p>
+                    Learn how to identify opportunities and build a
+                    sustainable small business.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">💰</div>
+                <h3>Business Finance</h3>
+                <p>
+                    Understand pricing, cash flow, budgeting and
+                    basic financial management.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">📣</div>
+                <h3>Marketing</h3>
+                <p>
+                    Learn practical strategies for attracting and
+                    retaining customers.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">📋</div>
+                <h3>Business Management</h3>
+                <p>
+                    Develop practical skills for managing people,
+                    operations and business growth.
+                </p>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASSESSMENT CENTRE -->
+
+    <section id="assessmentCentre" class="section">
+
+        <h2 class="section-title">
+            🤖 Assessment Centre
+        </h2>
+
+        <p class="section-description">
+            Complete assessments, view detailed results and,
+            where applicable, submit theory scripts for marking.
+        </p>
+
+        <div class="cards">
+
+            <a href="#" class="card">
+                <div class="card-icon">📝</div>
+                <h3>My Assessments</h3>
+                <p>
+                    View available tests and assessments.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">📊</div>
+                <h3>Assessment Results</h3>
+                <p>
+                    View scores, grades, remarks and detailed
+                    performance history.
+                </p>
+            </a>
+
+            <a id="scriptMarkingCard" href="#" class="card hidden">
+                <div class="card-icon">📄</div>
+                <h3>Script Marking</h3>
+                <p>
+                    Review student theory and essay submissions
+                    assigned to you.
+                </p>
+            </a>
+
+            <a href="#" class="card">
+                <div class="card-icon">🏆</div>
+                <h3>Certificates</h3>
+                <p>
+                    Access certificates earned from completed
+                    programmes.
+                </p>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- FUTURE FEATURES -->
+
     <section class="coming-soon">
 
         <h3>
-            Your professional development journey starts here.
+            🚀 More features are coming.
         </h3>
 
         <p>
-            Training programmes, online assessments,
-            results and certificates will appear in this
-            dashboard as they become available.
+            Esty Academy Consult is being developed into a comprehensive
+            learning and professional development platform with courses,
+            videos, examination practice, assessments, certificates,
+            teacher tools, entrepreneurship training and AI-assisted
+            educational services.
         </p>
 
     </section>
@@ -479,6 +710,79 @@
 
         message.style.display = "block";
         message.textContent = text;
+
+    }
+
+
+    function normaliseRole(role) {
+
+        return (role || "")
+            .toString()
+            .trim()
+            .toLowerCase();
+
+    }
+
+
+    function configureDashboard(role) {
+
+        const cleanRole =
+            normaliseRole(role);
+
+
+        const teacherCentre =
+            document.getElementById("teacherCentre");
+
+
+        const scriptMarkingCard =
+            document.getElementById("scriptMarkingCard");
+
+
+        if (
+            cleanRole === "teacher" ||
+            cleanRole === "headteacher" ||
+            cleanRole === "admin"
+        ) {
+
+            teacherCentre.classList.remove("hidden");
+
+        }
+
+
+        if (
+            cleanRole === "teacher" ||
+            cleanRole === "headteacher" ||
+            cleanRole === "admin"
+        ) {
+
+            scriptMarkingCard.classList.remove("hidden");
+
+        }
+
+
+        if (cleanRole === "admin") {
+
+            document.getElementById("welcomeText").textContent =
+                "Welcome to your Esty Academy Consult administration and learning dashboard.";
+
+        }
+
+        else if (
+            cleanRole === "teacher" ||
+            cleanRole === "headteacher"
+        ) {
+
+            document.getElementById("welcomeText").textContent =
+                "Welcome to your Esty Academy Consult professional development and teaching dashboard.";
+
+        }
+
+        else {
+
+            document.getElementById("welcomeText").textContent =
+                "Welcome to your Esty Academy Consult learning dashboard.";
+
+        }
 
     }
 
@@ -539,7 +843,11 @@
 
 
             const fullName =
-                profile.full_name || "Teacher";
+                profile.full_name || "Learner";
+
+
+            const userRole =
+                profile.role || "student";
 
 
             document.getElementById("teacherName").textContent =
@@ -559,7 +867,10 @@
 
 
             document.getElementById("role").textContent =
-                profile.role || "Teacher";
+                userRole;
+
+
+            configureDashboard(userRole);
 
         }
 
@@ -581,32 +892,36 @@
 
     document
         .getElementById("logoutBtn")
-        .addEventListener("click", async function() {
+        .addEventListener(
+            "click",
+            async function() {
 
-            const {
-                error
-            } = await supabaseClient.auth.signOut();
-
-
-            if (error) {
-
-                console.error(
-                    "Logout error:",
+                const {
                     error
-                );
+                } = await supabaseClient.auth.signOut();
 
-                showError(
-                    "Unable to log out. Please try again."
-                );
 
-                return;
+                if (error) {
+
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
+                    showError(
+                        "Unable to log out. Please try again."
+                    );
+
+                    return;
+
+                }
+
+
+                window.location.href =
+                    "login.html";
 
             }
-
-
-            window.location.href = "login.html";
-
-        });
+        );
 
 
     loadDashboard();
