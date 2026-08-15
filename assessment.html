@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assessments | Esty Academy Consult</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0b2d4d;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            font-size: 12px;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            background: white;
+            color: #0b2d4d;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .page-title {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #0b2d4d;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .message {
+            display: none;
+            padding: 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .success {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .loading {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            color: #666;
+        }
+
+        .tests {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .test-card {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        }
+
+        .test-card h3 {
+            color: #0b2d4d;
+            margin-bottom: 10px;
+        }
+
+        .test-card p {
+            color: #666;
+            line-height: 1.5;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .test-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .badge {
+            background: #eef3f7;
+            color: #0b2d4d;
+            padding: 6px 9px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .start-btn {
+            width: 100%;
+            border: none;
+            background: #0b2d4d;
+            color: white;
+            padding: 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            background: #176b87;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            text-align: center;
+            color: #666;
+        }
+
+        footer {
+            background: #071d31;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            font-size: 13px;
+        }
+
+        footer p + p {
+            margin-top: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .tests {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .tests {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div>
+        <div class="brand">
+            ESTY ACADEMY CONSULT
+        </div>
+
+        <div class="tagline">
+            Empowering Teachers. Strengthening Schools. Transforming Education.
+        </div>
+    </div>
+
+    <div class="header-buttons">
+
+        <a href="dashboard.html" class="header-btn">
+            Dashboard
+        </a>
+
+        <button id="logoutBtn" class="header-btn">
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <section class="page-title">
+
+        <h1>
+            📝 Assessment Centre
+        </h1>
+
+        <p>
+            Take available assessments, practise examination questions,
+            receive grades and review your performance.
+        </p>
+
+    </section>
+
+
+    <div id="message" class="message"></div>
+
+
+    <div id="loading" class="loading">
+        Loading available assessments...
+    </div>
+
+
+    <section id="testsContainer" class="tests"></section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        &copy; 2026 Esty Academy Consult. All Rights Reserved.
+    </p>
+
+    <p>
+        Empowering Teachers. Strengthening Schools. Transforming Education.
+    </p>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+    const SUPABASE_URL =
+        "https://tsrxkifpkzjaibyujyhk.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_dFqg9KQcLeBbz7Nww04KEQ_XB_v38c4";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+    const loading =
+        document.getElementById("loading");
+
+
+    const testsContainer =
+        document.getElementById("testsContainer");
+
+
+    const message =
+        document.getElementById("message");
+
+
+    function showMessage(text, type) {
+
+        message.className =
+            "message " + type;
+
+        message.textContent =
+            text;
+
+        message.style.display =
+            "block";
+
+    }
+
+
+    async function loadAssessments() {
+
+        try {
+
+            const {
+                data: {
+                    session
+                },
+                error: sessionError
+            } =
+                await supabaseClient.auth.getSession();
+
+
+            if (sessionError) {
+                throw sessionError;
+            }
+
+
+            if (!session) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            const {
+                data: tests,
+                error: testsError
+            } =
+                await supabaseClient
+                    .from("tests")
+                    .select(`
+                        id,
+                        title,
+                        description,
+                        duration_minutes,
+                        pass_mark,
+                        total_questions,
+                        is_published,
+                        course_id
+                    `)
+                    .eq("is_published", true)
+                    .order("created_at", {
+                        ascending: false
+                    });
+
+
+            if (testsError) {
+                throw testsError;
+            }
+
+
+            loading.style.display =
+                "none";
+
+
+            if (!tests || tests.length === 0) {
+
+                testsContainer.innerHTML = `
+                    <div class="empty">
+                        <h3>No assessments available yet.</h3>
+                        <p>
+                            Published assessments will appear here
+                            when they are made available.
+                        </p>
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            testsContainer.innerHTML =
+                tests.map(test => `
+
+                    <article class="test-card">
+
+                        <h3>
+                            ${escapeHtml(test.title)}
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                test.description ||
+                                "Assessment available through Esty Academy Consult."
+                            )}
+                        </p>
+
+                        <div class="test-info">
+
+                            <span class="badge">
+                                ⏱ ${test.duration_minutes} mins
+                            </span>
+
+                            <span class="badge">
+                                🎯 Pass: ${test.pass_mark}%
+                            </span>
+
+                            <span class="badge">
+                                📝 ${test.total_questions || 0} questions
+                            </span>
+
+                        </div>
+
+                        <button
+                            class="start-btn"
+                            onclick="startAssessment('${test.id}')"
+                        >
+                            Start Assessment
+                        </button>
+
+                    </article>
+
+                `).join("");
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Assessment loading error:",
+                error
+            );
+
+            loading.style.display =
+                "none";
+
+            showMessage(
+                "Unable to load assessments. Please try again.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function startAssessment(testId) {
+
+        window.location.href =
+            "take-test.html?test=" +
+            encodeURIComponent(testId);
+
+    }
+
+
+    document
+        .getElementById("logoutBtn")
+        .addEventListener(
+            "click",
+            async function() {
+
+                const {
+                    error
+                } =
+                    await supabaseClient.auth.signOut();
+
+
+                if (error) {
+
+                    showMessage(
+                        "Unable to log out. Please try again.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                window.location.href =
+                    "login.html";
+
+            }
+        );
+
+
+    loadAssessments();
+
+</script>
+
+</body>
+</html>
