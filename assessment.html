@@ -31,15 +31,28 @@
         }
 
         .brand {
-            font-size: 21px;
-            font-weight: bold;
-        }
+    font-size: 21px;
+    font-weight: bold;
+}
 
-        .tagline {
-            font-size: 12px;
-            margin-top: 4px;
-            opacity: 0.9;
-        }
+.logo {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.brand-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.tagline {
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0.9;
+}
 
         .timer {
             background: #fff;
@@ -375,16 +388,33 @@
 
 <header>
 
-    <div>
-        <div class="brand">
-            ESTY ACADEMY CONSULT
+    <div class="brand-area">
+
+        <img
+            src="esty-academy-logo-header.png"
+            alt="Esty Academy Consult Logo"
+            class="logo"
+        >
+
+        <div>
+
+            <div class="brand">
+                ESTY ACADEMY CONSULT
+            </div>
+
+            <div class="tagline">
+                Empowering People. Building Businesses. Transforming Lives.
+            </div>
+
         </div>
 
-        <div class="tagline">
-            Empowering Teachers. Strengthening Schools. Transforming Education.
-        </div>
     </div>
 
+    <div id="timer" class="timer">
+        Loading...
+    </div>
+
+</header>
     <div id="timer" class="timer">
         Loading...
     </div>
@@ -511,7 +541,7 @@
     </p>
 
     <p>
-        Empowering Teachers. Strengthening Schools. Transforming Education.
+        Empowering People. Building Businesses. Transforming Lives.
     </p>
 
 </footer>
