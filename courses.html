@@ -324,28 +324,104 @@
             }
 
 
-            const {
-                data: courses,
-                error: coursesError
-            } = await supabaseClient
-                .from("courses")
-                .select(`
-                    id,
-                    title,
-                    description
-                `)
-                .eq(
-                    "is_published",
-                    true
-                )
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+           const {
+    data: {
+        session
+    },
+    error: sessionError
+} = await supabaseClient.auth.getSession();
 
 
+if (sessionError) {
+    throw sessionError;
+}
+
+
+if (!session) {
+
+    window.location.href = "login.html";
+    return;
+
+}
+
+
+const user =
+    session.user;
+
+
+const {
+    data: enrollments,
+    error: enrollmentError
+} = await supabaseClient
+    .from("course_enrollments")
+    .select(`
+        course_id,
+        status
+    `)
+    .eq(
+        "user_id",
+        user.id
+    )
+    .eq(
+        "status",
+        "active"
+    );
+
+
+if (enrollmentError) {
+    throw enrollmentError;
+}
+
+
+const enrolledCourseIds =
+    (enrollments || [])
+        .map(
+            function(enrollment) {
+                return enrollment.course_id;
+            }
+        );
+
+
+let courses = [];
+
+
+if (enrolledCourseIds.length > 0) {
+
+    const {
+        data: enrolledCourses,
+        error: coursesError
+    } = await supabaseClient
+        .from("courses")
+        .select(`
+            id,
+            title,
+            description
+        `)
+        .in(
+            "id",
+            enrolledCourseIds
+        )
+        .eq(
+            "is_published",
+            true
+        )
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (coursesError) {
+        throw coursesError;
+    }
+
+
+    courses =
+        enrolledCourses || [];
+
+}
             if (coursesError) {
                 throw coursesError;
             }
