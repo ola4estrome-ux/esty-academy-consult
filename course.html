@@ -598,14 +598,14 @@
                                             : ""
                                     }
 
-                                    <button
-                                        class="complete-btn"
-                                        type="button"
-                                        onclick="markLessonComplete('${lesson.id}')"
-                                    >
-                                        ✓ Mark Lesson as Complete
-                                    </button>
-
+                                   <button
+    class="complete-btn"
+    type="button"
+    data-lesson-id="${lesson.id}"
+    onclick="markLessonComplete('${lesson.id}', this)"
+>
+    ✓ Mark Lesson as Complete
+</button>
                                 </article>
 
                             `;
@@ -673,7 +673,7 @@
     }
 
 
-    async function markLessonComplete(lessonId) {
+    async function markLessonComplete(lessonId, button) {
 
     try {
 
@@ -710,9 +710,10 @@
 
             if (error.code === "23505") {
 
-                alert(
-                    "You have already completed this lesson."
-                );
+                button.textContent =
+                    "✓ Lesson Completed";
+
+                button.disabled = true;
 
                 return;
 
@@ -721,6 +722,11 @@
             throw error;
 
         }
+
+        button.textContent =
+            "✓ Lesson Completed";
+
+        button.disabled = true;
 
         alert(
             "✓ Lesson completed successfully!"
@@ -742,8 +748,77 @@
     }
 
 }
+    async function loadCompletedLessons() {
 
-    loadCourse();
+    try {
+
+        const {
+            data: {
+                session
+            },
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+        if (sessionError) {
+            throw sessionError;
+        }
+
+        if (!session) {
+            return;
+        }
+
+        const user = session.user;
+
+        const {
+            data: completedLessons,
+            error
+        } = await supabaseClient
+            .from("lesson_progress")
+            .select("lesson_id")
+            .eq("user_id", user.id);
+
+        if (error) {
+            throw error;
+        }
+
+        if (!completedLessons) {
+            return;
+        }
+
+        completedLessons.forEach(function(progress) {
+
+            const button =
+                document.querySelector(
+                    `.complete-btn[data-lesson-id="${progress.lesson_id}"]`
+                );
+
+            if (button) {
+
+                button.textContent =
+                    "✓ Lesson Completed";
+
+                button.disabled = true;
+
+            }
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Completed lessons loading error:",
+            error
+        );
+
+    }
+
+}
+   loadCourse()
+    .then(function() {
+        loadCompletedLessons();
+    });
 
 </script>
 
