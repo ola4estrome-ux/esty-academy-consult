@@ -168,22 +168,64 @@
             background: #0b2d4d;
         }
 
-        .empty {
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-            text-align: center;
-            color: #666;
-        }
+       .empty {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    text-align: center;
+    color: #666;
+}
 
-        .message {
-            display: none;
-            background: #f8d7da;
-            color: #842029;
-            padding: 15px;
-            border-radius: 7px;
-            margin-bottom: 20px;
-        }
+
+/* =========================
+   COURSE PROGRESS
+========================= */
+
+.progress-wrapper {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #0b2d4d;
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 14px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #176b87;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    margin-top: 8px;
+    color: #666;
+    font-size: 13px;
+}
+
+
+.message {
+    display: none;
+    background: #f8d7da;
+    color: #842029;
+    padding: 15px;
+    border-radius: 7px;
+    margin-bottom: 20px;
+}
 
         .loading {
             background: white;
@@ -263,6 +305,26 @@
         </h1>
 
         <p id="courseDescription"></p>
+        <div class="progress-wrapper">
+
+    <div class="progress-info">
+        <span>Course Progress</span>
+        <strong id="progressPercentage">0%</strong>
+    </div>
+
+    <div class="progress-bar">
+        <div
+            id="progressBar"
+            class="progress-fill"
+            style="width: 0%;"
+        ></div>
+    </div>
+
+    <p id="progressText" class="progress-text">
+        0 of 0 lessons completed
+    </p>
+
+</div>
 
     </section>
 
@@ -748,6 +810,126 @@
     }
 
 }
+    async function updateCourseProgress() {
+
+    try {
+
+        const {
+            data: {
+                session
+            },
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+        if (sessionError) {
+            throw sessionError;
+        }
+
+        if (!session) {
+            return;
+        }
+
+        const user = session.user;
+
+        const {
+            data: modules,
+            error: modulesError
+        } = await supabaseClient
+            .from("course_modules")
+            .select("id")
+            .eq("course_id", COURSE_ID);
+
+        if (modulesError) {
+            throw modulesError;
+        }
+
+        if (!modules || modules.length === 0) {
+            return;
+        }
+
+        const moduleIds =
+            modules.map(function(module) {
+                return module.id;
+            });
+
+        const {
+            data: lessons,
+            error: lessonsError
+        } = await supabaseClient
+            .from("lessons")
+            .select("id")
+            .in("module_id", moduleIds)
+            .eq("is_published", true);
+
+        if (lessonsError) {
+            throw lessonsError;
+        }
+
+        const totalLessons =
+            lessons ? lessons.length : 0;
+
+        if (totalLessons === 0) {
+            return;
+        }
+
+        const lessonIds =
+            lessons.map(function(lesson) {
+                return lesson.id;
+            });
+
+        const {
+            data: completedLessons,
+            error: progressError
+        } = await supabaseClient
+            .from("lesson_progress")
+            .select("lesson_id")
+            .eq("user_id", user.id)
+            .in("lesson_id", lessonIds);
+
+        if (progressError) {
+            throw progressError;
+        }
+
+        const completedCount =
+            completedLessons
+                ? completedLessons.length
+                : 0;
+
+        const percentage =
+            Math.round(
+                (completedCount / totalLessons) * 100
+            );
+
+        document.getElementById(
+            "progressPercentage"
+        ).textContent =
+            percentage + "%";
+
+        document.getElementById(
+            "progressBar"
+        ).style.width =
+            percentage + "%";
+
+        document.getElementById(
+            "progressText"
+        ).textContent =
+            completedCount +
+            " of " +
+            totalLessons +
+            " lessons completed";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Course progress error:",
+            error
+        );
+
+    }
+
+}
     async function loadCompletedLessons() {
 
     try {
@@ -792,15 +974,16 @@
                     `.complete-btn[data-lesson-id="${progress.lesson_id}"]`
                 );
 
-            if (button) {
+           if (button) {
 
-                button.textContent =
-                    "✓ Lesson Completed";
+    button.textContent =
+        "✓ Lesson Completed";
 
-                button.disabled = true;
+    button.disabled = true;
 
-            }
+    updateCourseProgress();
 
+}
         });
 
     }
@@ -815,9 +998,12 @@
     }
 
 }
-   loadCourse()
+  loadCourse()
     .then(function() {
-        loadCompletedLessons();
+        return loadCompletedLessons();
+    })
+    .then(function() {
+        updateCourseProgress();
     });
 
 </script>
