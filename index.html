@@ -54,7 +54,34 @@
             margin-left: 22px;
             font-size: 14px;
         }
+.brand-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
+.header-logo {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.tagline {
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0.9;
+}
         nav a:hover {
             text-decoration: underline;
         }
@@ -207,9 +234,27 @@
 <body>
 
 <header>
-    <div class="logo">
-        ESTY ACADEMY CONSULT
-        <span>Professional Education & Development</span>
+
+    <div class="brand-area">
+
+        <img
+            src="esty-academy-logo-header.png"
+            alt="Esty Academy Consult Logo"
+            class="header-logo"
+        >
+
+        <div class="brand-text">
+
+            <div class="brand">
+                ESTY ACADEMY CONSULT
+            </div>
+
+            <div class="tagline">
+                Empowering People. Building Businesses. Transforming Lives.
+            </div>
+
+        </div>
+
     </div>
 
     <nav>
@@ -219,6 +264,7 @@
         <a href="#assessment">Assessment</a>
         <a href="#contact">Contact</a>
     </nav>
+
 </header>
 
 <section class="hero" id="home">
@@ -321,7 +367,7 @@
 
 <footer>
     <p>&copy; 2026 Esty Academy Consult. All Rights Reserved.</p>
-    <p>Empowering Teachers. Strengthening Schools. Transforming Education.</p>
+    <p>Empowering People. Building Businesses. Transforming Lives.</p>
 </footer>
 
 </body>
