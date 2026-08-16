@@ -673,16 +673,75 @@
     }
 
 
-    function markLessonComplete(
-        lessonId
-    ) {
+    async function markLessonComplete(lessonId) {
+
+    try {
+
+        const {
+            data: {
+                session
+            },
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+        if (sessionError) {
+            throw sessionError;
+        }
+
+        if (!session) {
+
+            window.location.href = "login.html";
+            return;
+
+        }
+
+        const user = session.user;
+
+        const {
+            error
+        } = await supabaseClient
+            .from("lesson_progress")
+            .insert({
+                user_id: user.id,
+                lesson_id: lessonId
+            });
+
+        if (error) {
+
+            if (error.code === "23505") {
+
+                alert(
+                    "You have already completed this lesson."
+                );
+
+                return;
+
+            }
+
+            throw error;
+
+        }
 
         alert(
-            "Lesson completion tracking will be activated in the next step."
+            "✓ Lesson completed successfully!"
         );
 
     }
 
+    catch (error) {
+
+        console.error(
+            "Lesson completion error:",
+            error
+        );
+
+        alert(
+            "Unable to save lesson completion. Please try again."
+        );
+
+    }
+
+}
 
     loadCourse();
 
