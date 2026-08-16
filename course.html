@@ -42,7 +42,18 @@
             font-size: 21px;
             font-weight: bold;
         }
+.logo {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
 
+.brand-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
         .tagline {
             font-size: 12px;
             margin-top: 4px;
@@ -263,14 +274,24 @@
 
 <header>
 
-    <div>
+    <div class="brand-area">
 
-        <div class="brand">
-            ESTY ACADEMY CONSULT
-        </div>
+        <img
+            src="esty-academy-logo-header.png"
+            alt="Esty Academy Consult Logo"
+            class="logo"
+        >
 
-        <div class="tagline">
-            Empowering People. Building Businesses. Transforming Lives.
+        <div>
+
+            <div class="brand">
+                ESTY ACADEMY CONSULT
+            </div>
+
+            <div class="tagline">
+                Empowering People. Building Businesses. Transforming Lives.
+            </div>
+
         </div>
 
     </div>
