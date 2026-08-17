@@ -324,27 +324,6 @@
             }
 
 
-           const {
-    data: {
-        session
-    },
-    error: sessionError
-} = await supabaseClient.auth.getSession();
-
-
-if (sessionError) {
-    throw sessionError;
-}
-
-
-if (!session) {
-
-    window.location.href = "login.html";
-    return;
-
-}
-
-
 const user =
     session.user;
 
@@ -422,10 +401,7 @@ if (enrolledCourseIds.length > 0) {
         enrolledCourses || [];
 
 }
-            if (coursesError) {
-                throw coursesError;
-            }
-
+            
 
             const container =
                 document.getElementById(
