@@ -454,7 +454,48 @@
                 );
 
             }
+const user =
+    session.user;
 
+
+const {
+    data: enrollment,
+    error: enrollmentError
+} = await supabaseClient
+    .from("course_enrollments")
+    .select("course_id")
+    .eq(
+        "user_id",
+        user.id
+    )
+    .eq(
+        "course_id",
+        COURSE_ID
+    )
+    .eq(
+        "status",
+        "active"
+    )
+    .maybeSingle();
+
+
+if (enrollmentError) {
+    throw enrollmentError;
+}
+
+
+if (!enrollment) {
+
+    alert(
+        "You are not enrolled in this course."
+    );
+
+    window.location.href =
+        "courses.html";
+
+    return;
+
+}
 
             const {
                 data: course,
