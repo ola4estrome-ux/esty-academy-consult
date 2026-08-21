@@ -934,14 +934,14 @@
         </p>
     </div>
 
-    <div class="card">
-        <div class="card-icon">👨‍🏫</div>
-        <h3>Teachers</h3>
-        <p>
-            Manage teachers and instructors, including their courses,
-            assessments and marking responsibilities.
-        </p>
-    </div>
+    <a href="#teacherManagement" class="card">
+    <div class="card-icon">👨‍🏫</div>
+    <h3>Teachers</h3>
+    <p>
+        Manage teachers and instructors, including their courses,
+        assessments and marking responsibilities.
+    </p>
+</a>
 
     <div class="card">
         <div class="card-icon">🏫</div>
@@ -996,6 +996,29 @@
     </div>
 
 </div>
+
+</section>
+    <!-- TEACHER MANAGEMENT -->
+
+<section id="teacherManagement" class="section hidden">
+
+    <h2 class="section-title">
+        👨‍🏫 Teacher Management
+    </h2>
+
+    <p class="section-description">
+        View and manage teachers registered on Esty Academy Consult.
+    </p>
+
+    <div id="teacherManagementMessage"></div>
+
+    <div id="teachersContainer">
+
+        <p>
+            Loading teachers...
+        </p>
+
+    </div>
 
 </section>
     <!-- FUTURE FEATURES -->
@@ -1632,11 +1655,185 @@ document.addEventListener(
 
         event.preventDefault();
 
-        showSection(sectionId);
+showSection(sectionId);
+
+
+if (sectionId === "teacherManagement") {
+
+    loadTeachers();
+
+}
 
     }
 );
+async function loadTeachers() {
 
+    const container =
+        document.getElementById(
+            "teachersContainer"
+        );
+
+    const message =
+        document.getElementById(
+            "teacherManagementMessage"
+        );
+
+    try {
+
+        const {
+            data: teachers,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, phone, school_name, role, created_at, updated_at"
+            )
+            .eq(
+                "role",
+                "teacher"
+            )
+            .order(
+                "full_name",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !teachers ||
+            teachers.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="card">
+                    <h3>No Teachers Found</h3>
+                    <p>
+                        There are currently no users
+                        with the teacher role.
+                    </p>
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        teachers.forEach(
+            function(teacher, index) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card";
+
+
+                const createdDate =
+                    teacher.created_at
+                        ? new Date(
+                            teacher.created_at
+                        ).toLocaleDateString(
+                            undefined,
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "Not available";
+
+
+                card.innerHTML = `
+
+                    <div class="card-icon">
+                        👨‍🏫
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            teacher.full_name ||
+                            "Unnamed Teacher"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${escapeHtml(
+                            teacher.role
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(
+                            teacher.phone ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>School:</strong>
+                        ${escapeHtml(
+                            teacher.school_name ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Registered:</strong>
+                        ${createdDate}
+                    </p>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        if (message) {
+            message.textContent = "";
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Teacher loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="card">
+                <h3>Unable to Load Teachers</h3>
+                <p>
+                    We could not retrieve the teacher records.
+                    Please try again.
+                </p>
+            </div>
+        `;
+
+    }
+
+}
     loadDashboard();
 loadAssessmentHistory();
 </script>
