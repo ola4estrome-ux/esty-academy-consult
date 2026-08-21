@@ -926,13 +926,13 @@
 
    <div class="cards">
 
-    <div class="card">
-        <div class="card-icon">🎓</div>
-        <h3>Students / Learners</h3>
-        <p>
-            View and manage students and other learners using the platform.
-        </p>
-    </div>
+    <a href="#studentManagement" class="card">
+    <div class="card-icon">🎓</div>
+    <h3>Students / Learners</h3>
+    <p>
+        View and manage students and other learners using the platform.
+    </p>
+</a>
 
     <a href="#teacherManagement" class="card">
     <div class="card-icon">👨‍🏫</div>
@@ -996,6 +996,29 @@
     </div>
 
 </div>
+
+</section>
+    <!-- STUDENT MANAGEMENT -->
+
+<section id="studentManagement" class="section hidden">
+
+    <h2 class="section-title">
+        🎓 Student / Learner Management
+    </h2>
+
+    <p class="section-description">
+        View and manage students and learners registered on Esty Academy Consult.
+    </p>
+
+    <div id="studentManagementMessage"></div>
+
+    <div id="studentsContainer">
+
+        <p>
+            Loading students...
+        </p>
+
+    </div>
 
 </section>
     <!-- TEACHER MANAGEMENT -->
@@ -1663,6 +1686,11 @@ if (sectionId === "teacherManagement") {
     loadTeachers();
 
 }
+        if (sectionId === "studentManagement") {
+
+    loadStudents();
+
+}
 
     }
 );
@@ -1826,6 +1854,178 @@ async function loadTeachers() {
                 <h3>Unable to Load Teachers</h3>
                 <p>
                     We could not retrieve the teacher records.
+                    Please try again.
+                </p>
+            </div>
+        `;
+
+    }
+
+}
+    async function loadStudents() {
+
+    const container =
+        document.getElementById(
+            "studentsContainer"
+        );
+
+    try {
+
+        const {
+            data: students,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, phone, school_name, role, created_at, updated_at"
+            )
+            .eq(
+                "role",
+                "student"
+            )
+            .order(
+                "full_name",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !students ||
+            students.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-icon">
+                        🎓
+                    </div>
+
+                    <h3>
+                        No Students Found
+                    </h3>
+
+                    <p>
+                        There are currently no users
+                        registered with the student role.
+                    </p>
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        students.forEach(
+            function(student) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card";
+
+
+                const createdDate =
+                    student.created_at
+                        ? new Date(
+                            student.created_at
+                        ).toLocaleDateString(
+                            undefined,
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "Not available";
+
+
+                card.innerHTML = `
+
+                    <div class="card-icon">
+                        🎓
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            student.full_name ||
+                            "Unnamed Student"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${escapeHtml(
+                            student.role
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(
+                            student.phone ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>School:</strong>
+                        ${escapeHtml(
+                            student.school_name ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Registered:</strong>
+                        ${createdDate}
+                    </p>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Student loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="card">
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Unable to Load Students
+                </h3>
+
+                <p>
+                    We could not retrieve the student records.
                     Please try again.
                 </p>
             </div>
