@@ -943,13 +943,13 @@
     </p>
 </a>
 
-    <div class="card">
-        <div class="card-icon">🏫</div>
-        <h3>Headteachers</h3>
-        <p>
-            Manage headteachers and school leaders using the platform.
-        </p>
-    </div>
+    <a href="#headteacherManagement" class="card">
+    <div class="card-icon">🏫</div>
+    <h3>Headteachers</h3>
+    <p>
+        Manage headteachers and school leaders using the platform.
+    </p>
+</a>
 
     <div class="card">
         <div class="card-icon">🏢</div>
@@ -1016,6 +1016,30 @@
 
         <p>
             Loading students...
+        </p>
+
+    </div>
+
+</section>
+    <!-- HEADTEACHER MANAGEMENT -->
+
+<section id="headteacherManagement" class="section hidden">
+
+    <h2 class="section-title">
+        🏫 Headteacher Management
+    </h2>
+
+    <p class="section-description">
+        View and manage headteachers and school leaders registered on
+        Esty Academy Consult.
+    </p>
+
+    <div id="headteacherManagementMessage"></div>
+
+    <div id="headteachersContainer">
+
+        <p>
+            Loading headteachers...
         </p>
 
     </div>
@@ -1691,7 +1715,11 @@ if (sectionId === "teacherManagement") {
     loadStudents();
 
 }
+if (sectionId === "headteacherManagement") {
 
+    loadHeadteachers();
+
+}
     }
 );
 async function loadTeachers() {
@@ -1736,7 +1764,183 @@ async function loadTeachers() {
         container.innerHTML = "";
 
 
+        if (async function loadHeadteachers() {
+
+    const container =
+        document.getElementById(
+            "headteachersContainer"
+        );
+
+    try {
+
+        const {
+            data: headteachers,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, phone, school_name, role, created_at, updated_at"
+            )
+            .eq(
+                "role",
+                "headteacher"
+            )
+            .order(
+                "full_name",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        container.innerHTML = "";
+
+
         if (
+            !headteachers ||
+            headteachers.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="card">
+
+                    <div class="card-icon">
+                        🏫
+                    </div>
+
+                    <h3>
+                        No Headteachers Found
+                    </h3>
+
+                    <p>
+                        There are currently no users
+                        registered with the headteacher role.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        headteachers.forEach(
+            function(headteacher) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card";
+
+
+                const createdDate =
+                    headteacher.created_at
+                        ? new Date(
+                            headteacher.created_at
+                        ).toLocaleDateString(
+                            undefined,
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "Not available";
+
+
+                card.innerHTML = `
+
+                    <div class="card-icon">
+                        🏫
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            headteacher.full_name ||
+                            "Unnamed Headteacher"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${escapeHtml(
+                            headteacher.role
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(
+                            headteacher.phone ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>School:</strong>
+                        ${escapeHtml(
+                            headteacher.school_name ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Registered:</strong>
+                        ${createdDate}
+                    </p>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Headteacher loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="card">
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Unable to Load Headteachers
+                </h3>
+
+                <p>
+                    We could not retrieve the headteacher records.
+                    Please try again.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}student code
+            
             !teachers ||
             teachers.length === 0
         ) {
@@ -2028,6 +2232,182 @@ async function loadTeachers() {
                     We could not retrieve the student records.
                     Please try again.
                 </p>
+            </div>
+        `;
+
+    }
+
+}
+    async function loadHeadteachers() {
+
+    const container =
+        document.getElementById(
+            "headteachersContainer"
+        );
+
+    try {
+
+        const {
+            data: headteachers,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, phone, school_name, role, created_at, updated_at"
+            )
+            .eq(
+                "role",
+                "headteacher"
+            )
+            .order(
+                "full_name",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !headteachers ||
+            headteachers.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="card">
+
+                    <div class="card-icon">
+                        🏫
+                    </div>
+
+                    <h3>
+                        No Headteachers Found
+                    </h3>
+
+                    <p>
+                        There are currently no users
+                        registered with the headteacher role.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        headteachers.forEach(
+            function(headteacher) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card";
+
+
+                const createdDate =
+                    headteacher.created_at
+                        ? new Date(
+                            headteacher.created_at
+                        ).toLocaleDateString(
+                            undefined,
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "Not available";
+
+
+                card.innerHTML = `
+
+                    <div class="card-icon">
+                        🏫
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            headteacher.full_name ||
+                            "Unnamed Headteacher"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${escapeHtml(
+                            headteacher.role
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(
+                            headteacher.phone ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>School:</strong>
+                        ${escapeHtml(
+                            headteacher.school_name ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Registered:</strong>
+                        ${createdDate}
+                    </p>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Headteacher loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div class="card">
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Unable to Load Headteachers
+                </h3>
+
+                <p>
+                    We could not retrieve the headteacher records.
+                    Please try again.
+                </p>
+
             </div>
         `;
 
