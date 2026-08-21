@@ -1537,6 +1537,68 @@ function escapeHtml(value) {
         );
 
 }
+    function showSection(sectionId) {
+
+    const sections =
+        document.querySelectorAll(".section");
+
+    sections.forEach(function(section) {
+
+        section.classList.add("hidden");
+
+    });
+
+
+    const targetSection =
+        document.getElementById(sectionId);
+
+    if (targetSection) {
+
+        targetSection.classList.remove("hidden");
+
+        targetSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const link =
+            event.target.closest(
+                'a[href^="#"]'
+            );
+
+        if (!link) {
+            return;
+        }
+
+
+        const sectionId =
+            link.getAttribute("href").substring(1);
+
+
+        const target =
+            document.getElementById(sectionId);
+
+
+        if (!target) {
+            return;
+        }
+
+
+        event.preventDefault();
+
+        showSection(sectionId);
+
+    }
+);
 
     loadDashboard();
 loadAssessmentHistory();
