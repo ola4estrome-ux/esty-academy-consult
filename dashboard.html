@@ -822,7 +822,96 @@
 
     </section>
 
+<!-- ADMIN CENTRE -->
 
+<section id="adminCentre" class="section hidden">
+
+    <h2 class="section-title">
+        ⚙️ Administration Centre
+    </h2>
+
+    <p class="section-description">
+        Manage users, courses, enrolments, assessments, payments,
+        learner progress and certificates from one central dashboard.
+    </p>
+
+    <div class="cards">
+
+        <a href="#" class="card">
+            <div class="card-icon">👥</div>
+            <h3>User Management</h3>
+            <p>
+                View and manage learners, teachers, school professionals,
+                business owners and entrepreneurs.
+            </p>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-icon">📚</div>
+            <h3>Course Management</h3>
+            <p>
+                Create, publish, update and manage courses, modules,
+                lessons and learning materials.
+            </p>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-icon">🎓</div>
+            <h3>Course Enrolment</h3>
+            <p>
+                Enrol users into courses and manage active and completed
+                course enrolments.
+            </p>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-icon">💳</div>
+            <h3>Payment Management</h3>
+            <p>
+                Manage certificate payments and examination practice
+                packages.
+            </p>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-icon">📝</div>
+            <h3>Assessment Management</h3>
+            <p>
+                Manage assessments, examination practice, attempts,
+                questions and grading.
+            </p>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-icon">📈</div>
+            <h3>Learner Progress</h3>
+            <p>
+                Monitor course completion, lesson progress,
+                assessment performance and learner activity.
+            </p>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-icon">🏆</div>
+            <h3>Certificate Management</h3>
+            <p>
+                Manage certificate eligibility, certificate payments
+                and certificates issued to learners.
+            </p>
+        </a>
+
+        <a href="#" class="card">
+            <div class="card-icon">⚙️</div>
+            <h3>Platform Settings</h3>
+            <p>
+                Configure course certificate rules, examination attempt
+                limits and other platform settings.
+            </p>
+        </a>
+
+    </div>
+
+</section>
     <!-- FUTURE FEATURES -->
 
     <section class="coming-soon">
@@ -912,7 +1001,8 @@
         const scriptMarkingCard =
             document.getElementById("scriptMarkingCard");
 
-
+const adminCentre =
+    document.getElementById("adminCentre");
         if (
             cleanRole === "teacher" ||
             cleanRole === "headteacher" ||
@@ -936,7 +1026,7 @@
 
 
         if (cleanRole === "admin") {
-
+adminCentre.classList.remove("hidden");
             document.getElementById("welcomeText").textContent =
                 "Welcome to your Esty Academy Consult administration and learning dashboard.";
 
