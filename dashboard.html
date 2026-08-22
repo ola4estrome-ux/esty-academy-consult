@@ -382,7 +382,65 @@
 }
             /* YOUR EXISTING CSS ABOVE */
 
+/* ================================
+   ADMIN NAVIGATION
+================================ */
 
+.admin-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 25px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-nav-btn {
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    padding: 10px 15px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    transition: all 0.2s ease;
+}
+
+.admin-nav-btn:hover {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    transform: translateY(-1px);
+}
+
+.admin-nav-btn.active {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: white;
+}
+
+.admin-nav-btn:focus {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+
+    .admin-navigation {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .admin-nav-btn {
+        width: 100%;
+        text-align: left;
+    }
+
+}
 
 </style>
     </style>
@@ -918,81 +976,7 @@
 </div>
 <!-- ADMIN NAVIGATION -->
 
-<div class="admin-navigation">
 
-    <button
-        type="button"
-        class="admin-nav-btn active"
-        data-admin-section="adminDashboardSection"
-    >
-        🏠 Admin Dashboard
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="userManagementSection"
-    >
-        👥 User Management
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="courseManagementSection"
-    >
-        📚 Course Management
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="enrolmentSection"
-    >
-        🎓 Course Enrolment
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="paymentSection"
-    >
-        💳 Payment Management
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="assessmentManagementSection"
-    >
-        📝 Assessment Management
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="learnerProgressSection"
-    >
-        📈 Learner Progress
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="certificateManagementSection"
-    >
-        🏆 Certificate Management
-    </button>
-
-    <button
-        type="button"
-        class="admin-nav-btn"
-        data-admin-section="platformSettingsSection"
-    >
-        ⚙️ Platform Settings
-    </button>
-
-</div>
     <div class="cards">
 
        <a href="#userManagement" class="card">
