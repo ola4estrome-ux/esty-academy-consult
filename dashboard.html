@@ -380,6 +380,64 @@
     }
 
 }
+            /* YOUR EXISTING CSS ABOVE */
+
+
+    /* ================================
+       ADMIN NAVIGATION
+    ================================= */
+
+    .admin-navigation {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 25px 0;
+        padding: 15px;
+        background: #f5f7fa;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .admin-nav-btn {
+        border: none;
+        background: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        transition: 0.2s ease;
+    }
+
+    .admin-nav-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .admin-nav-btn.active {
+        background: #1d4ed8;
+        color: white;
+    }
+
+    .admin-nav-btn:focus {
+        outline: 2px solid #93c5fd;
+        outline-offset: 2px;
+    }
+
+    @media (max-width: 768px) {
+
+        .admin-navigation {
+            flex-direction: column;
+        }
+
+        .admin-nav-btn {
+            width: 100%;
+            text-align: left;
+        }
+
+    }
+
+</style>
     </style>
 </head>
 
@@ -834,7 +892,160 @@
         Manage users, courses, enrolments, assessments, payments,
         learner progress and certificates from one central dashboard.
     </p>
+    <!-- ADMIN NAVIGATION -->
 
+<div class="admin-navigation">
+
+    <button
+        type="button"
+        class="admin-nav-btn active"
+        data-admin-section="adminDashboardSection"
+    >
+        🏠 Admin Dashboard
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="userManagementSection"
+    >
+        👥 User Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="courseManagementSection"
+    >
+        📚 Course Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="enrolmentSection"
+    >
+        🎓 Course Enrolment
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="paymentSection"
+    >
+        💳 Payment Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="assessmentManagementSection"
+    >
+        📝 Assessment Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="learnerProgressSection"
+    >
+        📈 Learner Progress
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="certificateManagementSection"
+    >
+        🏆 Certificate Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="platformSettingsSection"
+    >
+        ⚙️ Platform Settings
+    </button>
+
+</div>
+<!-- ADMIN NAVIGATION -->
+
+<div class="admin-navigation">
+
+    <button
+        type="button"
+        class="admin-nav-btn active"
+        data-admin-section="adminDashboardSection"
+    >
+        🏠 Admin Dashboard
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="userManagementSection"
+    >
+        👥 User Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="courseManagementSection"
+    >
+        📚 Course Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="enrolmentSection"
+    >
+        🎓 Course Enrolment
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="paymentSection"
+    >
+        💳 Payment Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="assessmentManagementSection"
+    >
+        📝 Assessment Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="learnerProgressSection"
+    >
+        📈 Learner Progress
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="certificateManagementSection"
+    >
+        🏆 Certificate Management
+    </button>
+
+    <button
+        type="button"
+        class="admin-nav-btn"
+        data-admin-section="platformSettingsSection"
+    >
+        ⚙️ Platform Settings
+    </button>
+
+</div>
     <div class="cards">
 
        <a href="#userManagement" class="card">
