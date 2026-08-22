@@ -912,7 +912,7 @@
     <button
         type="button"
         class="admin-nav-btn"
-        data-admin-section="userManagementSection"
+        data-admin-section="userManagement"
     >
         👥 User Management
     </button>
@@ -2400,6 +2400,104 @@ async function loadTeachers() {
 }
     loadDashboard();
 loadAssessmentHistory();
+    /* ==========================================
+   ADMIN NAVIGATION
+========================================== */
+
+function showAdminSection(sectionId) {
+
+    /* Hide all major dashboard sections */
+
+    const sections = document.querySelectorAll(
+        ".section"
+    );
+
+    sections.forEach(function(section) {
+
+        section.classList.add("hidden");
+
+    });
+
+
+    /* Show the selected section */
+
+    const selectedSection =
+        document.getElementById(sectionId);
+
+    if (selectedSection) {
+
+        selectedSection.classList.remove("hidden");
+
+    }
+
+
+    /* Update active navigation button */
+
+    const navButtons =
+        document.querySelectorAll(
+            ".admin-nav-btn"
+        );
+
+    navButtons.forEach(function(button) {
+
+        button.classList.remove("active");
+
+    });
+
+
+    const activeButton =
+        document.querySelector(
+            '.admin-nav-btn[data-admin-section="' +
+            sectionId +
+            '"]'
+        );
+
+    if (activeButton) {
+
+        activeButton.classList.add("active");
+
+    }
+
+}
+
+
+/* ==========================================
+   ADMIN NAVIGATION BUTTONS
+========================================== */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const button =
+            event.target.closest(
+                ".admin-nav-btn"
+            );
+
+        if (!button) {
+
+            return;
+
+        }
+
+
+        const sectionId =
+            button.getAttribute(
+                "data-admin-section"
+            );
+
+
+        if (!sectionId) {
+
+            return;
+
+        }
+
+
+        showAdminSection(sectionId);
+
+    }
+);
 </script>
 
 </body>
