@@ -904,7 +904,7 @@
     <button
         type="button"
         class="admin-nav-btn active"
-        data-admin-section="adminDashboardSection"
+        data-admin-section="adminCentre"
     >
         🏠 Admin Dashboard
     </button>
@@ -2400,26 +2400,27 @@ async function loadTeachers() {
 }
     loadDashboard();
 loadAssessmentHistory();
-    /* ==========================================
-   ADMIN NAVIGATION
+       /* ==========================================
+   ADMIN CENTRE NAVIGATION
 ========================================== */
 
-function showAdminSection(sectionId) {
+function openAdminArea(sectionId) {
 
-    /* Hide all major dashboard sections */
+    const adminCentre =
+        document.getElementById("adminCentre");
 
-    const sections = document.querySelectorAll(
-        ".section"
-    );
-
-    sections.forEach(function(section) {
-
-        section.classList.add("hidden");
-
-    });
+    const userManagement =
+        document.getElementById("userManagement");
 
 
-    /* Show the selected section */
+    /* Hide only the two Admin areas */
+
+    adminCentre.classList.add("hidden");
+
+    userManagement.classList.add("hidden");
+
+
+    /* Show the selected Admin area */
 
     const selectedSection =
         document.getElementById(sectionId);
@@ -2433,12 +2434,13 @@ function showAdminSection(sectionId) {
 
     /* Update active navigation button */
 
-    const navButtons =
+    const buttons =
         document.querySelectorAll(
             ".admin-nav-btn"
         );
 
-    navButtons.forEach(function(button) {
+
+    buttons.forEach(function(button) {
 
         button.classList.remove("active");
 
@@ -2452,6 +2454,7 @@ function showAdminSection(sectionId) {
             '"]'
         );
 
+
     if (activeButton) {
 
         activeButton.classList.add("active");
@@ -2462,7 +2465,7 @@ function showAdminSection(sectionId) {
 
 
 /* ==========================================
-   ADMIN NAVIGATION BUTTONS
+   ADMIN NAVIGATION CLICK
 ========================================== */
 
 document.addEventListener(
@@ -2473,6 +2476,7 @@ document.addEventListener(
             event.target.closest(
                 ".admin-nav-btn"
             );
+
 
         if (!button) {
 
@@ -2494,7 +2498,7 @@ document.addEventListener(
         }
 
 
-        showAdminSection(sectionId);
+        openAdminArea(sectionId);
 
     }
 );
