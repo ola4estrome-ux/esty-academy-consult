@@ -1095,15 +1095,6 @@
     </p>
 
 
-    <!-- RETURN TO ADMIN DASHBOARD -->
-
-    <button
-        type="button"
-        class="admin-back-btn"
-        id="backToAdminDashboard"
-    >
-        ← Back to Admin Dashboard
-    </button>
    <div class="cards">
 
     <a href="#studentManagement" class="card">
@@ -2438,129 +2429,7 @@ async function loadTeachers() {
 }
     loadDashboard();
 loadAssessmentHistory();
-       /* ==========================================
-   ADMIN CENTRE NAVIGATION
-========================================== */
-
-function openAdminArea(sectionId) {
-
-    const adminCentre =
-        document.getElementById("adminCentre");
-
-    const userManagement =
-        document.getElementById("userManagement");
-
-
-    /* Hide only the two Admin areas */
-
-    adminCentre.classList.add("hidden");
-
-    userManagement.classList.add("hidden");
-
-
-    /* Show the selected Admin area */
-
-    const selectedSection =
-        document.getElementById(sectionId);
-
-    if (selectedSection) {
-
-        selectedSection.classList.remove("hidden");
-
-    }
-
-
-    /* Update active navigation button */
-
-    const buttons =
-        document.querySelectorAll(
-            ".admin-nav-btn"
-        );
-
-
-    buttons.forEach(function(button) {
-
-        button.classList.remove("active");
-
-    });
-
-
-    const activeButton =
-        document.querySelector(
-            '.admin-nav-btn[data-admin-section="' +
-            sectionId +
-            '"]'
-        );
-
-
-    if (activeButton) {
-
-        activeButton.classList.add("active");
-
-    }
-
-}
-
-
-/* ==========================================
-   ADMIN NAVIGATION CLICK
-========================================== */
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const button =
-            event.target.closest(
-                ".admin-nav-btn"
-            );
-
-
-        if (!button) {
-
-            return;
-
-        }
-
-
-        const sectionId =
-            button.getAttribute(
-                "data-admin-section"
-            );
-
-
-        if (!sectionId) {
-
-            return;
-
-        }
-
-
-        openAdminArea(sectionId);
-
-    }
-);
-    /* ==========================================
-   RETURN TO ADMIN DASHBOARD
-========================================== */
-
-const backToAdminDashboard =
-    document.getElementById(
-        "backToAdminDashboard"
-    );
-
-if (backToAdminDashboard) {
-
-    backToAdminDashboard.addEventListener(
-        "click",
-        function() {
-
-            openAdminArea("adminCentre");
-
-        }
-    );
-
-}
+ 
 </script>
 
 </body>
