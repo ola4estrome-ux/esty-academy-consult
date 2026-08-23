@@ -426,7 +426,26 @@
     outline: 2px solid #93c5fd;
     outline-offset: 2px;
 }
+.admin-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5px 0 20px;
+    padding: 10px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
+.admin-back-btn:hover {
+    background: #f1f5f9;
+    transform: translateY(-1px);
+}
 @media (max-width: 768px) {
 
     .admin-navigation {
@@ -1065,7 +1084,26 @@
     <p class="section-description">
         Manage learners, teachers, administrators and other platform users.
     </p>
+<section id="userManagement" class="section hidden">
 
+    <h2 class="section-title">
+        👥 User Management
+    </h2>
+
+    <p class="section-description">
+        Manage learners, teachers, administrators and other platform users.
+    </p>
+
+
+    <!-- RETURN TO ADMIN DASHBOARD -->
+
+    <button
+        type="button"
+        class="admin-back-btn"
+        id="backToAdminDashboard"
+    >
+        ← Back to Admin Dashboard
+    </button>
    <div class="cards">
 
     <a href="#studentManagement" class="card">
@@ -2502,6 +2540,27 @@ document.addEventListener(
 
     }
 );
+    /* ==========================================
+   RETURN TO ADMIN DASHBOARD
+========================================== */
+
+const backToAdminDashboard =
+    document.getElementById(
+        "backToAdminDashboard"
+    );
+
+if (backToAdminDashboard) {
+
+    backToAdminDashboard.addEventListener(
+        "click",
+        function() {
+
+            openAdminArea("adminCentre");
+
+        }
+    );
+
+}
 </script>
 
 </body>
