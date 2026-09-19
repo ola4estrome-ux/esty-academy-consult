@@ -2647,7 +2647,173 @@ async function loadTeachers() {
         `;
 
     }
+async function loadEntrepreneurs() {
 
+    const container =
+        document.getElementById(
+            "entrepreneursContainer"
+        );
+
+    try {
+
+        const {
+            data: entrepreneurs,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, phone, school_name, role, created_at, updated_at"
+            )
+            .eq(
+                "role",
+                "entrepreneur"
+            )
+            .order(
+                "full_name",
+                {
+                    ascending: true
+                }
+            );
+
+        if (error) {
+            throw error;
+        }
+
+        container.innerHTML = "";
+
+        if (
+            !entrepreneurs ||
+            entrepreneurs.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="card">
+
+                    <div class="card-icon">
+                        🚀
+                    </div>
+
+                    <h3>
+                        No Entrepreneurs Found
+                    </h3>
+
+                    <p>
+                        There are currently no users
+                        registered with the entrepreneur role.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        entrepreneurs.forEach(
+            function(entrepreneur) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card";
+
+                const createdDate =
+                    entrepreneur.created_at
+                        ? new Date(
+                            entrepreneur.created_at
+                        ).toLocaleDateString(
+                            undefined,
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "Not available";
+
+                card.innerHTML = `
+
+                    <div class="card-icon">
+                        🚀
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            entrepreneur.full_name ||
+                            "Unnamed Entrepreneur"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${escapeHtml(
+                            entrepreneur.role
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(
+                            entrepreneur.phone ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>School:</strong>
+                        ${escapeHtml(
+                            entrepreneur.school_name ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Registered:</strong>
+                        ${createdDate}
+                    </p>
+
+                `;
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Entrepreneur loading error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="card">
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Unable to Load Entrepreneurs
+                </h3>
+
+                <p>
+                    We could not retrieve the entrepreneur records.
+                    Please try again.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
 }
     async function loadHeadteachers() {
 
