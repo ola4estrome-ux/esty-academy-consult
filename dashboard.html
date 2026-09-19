@@ -2268,6 +2268,173 @@ async function loadTeachers() {
     }
 
 }
+    async function loadSchoolOwners() {
+
+    const container =
+        document.getElementById(
+            "schoolOwnersContainer"
+        );
+
+    try {
+
+        const {
+            data: schoolOwners,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, phone, school_name, role, created_at, updated_at"
+            )
+            .eq(
+                "role",
+                "school_owner"
+            )
+            .order(
+                "full_name",
+                {
+                    ascending: true
+                }
+            );
+
+        if (error) {
+            throw error;
+        }
+
+        container.innerHTML = "";
+
+        if (
+            !schoolOwners ||
+            schoolOwners.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="card">
+
+                    <div class="card-icon">
+                        🏢
+                    </div>
+
+                    <h3>
+                        No School Owners Found
+                    </h3>
+
+                    <p>
+                        There are currently no users
+                        registered with the school owner role.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        schoolOwners.forEach(
+            function(schoolOwner) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card";
+
+                const createdDate =
+                    schoolOwner.created_at
+                        ? new Date(
+                            schoolOwner.created_at
+                        ).toLocaleDateString(
+                            undefined,
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "Not available";
+
+                card.innerHTML = `
+
+                    <div class="card-icon">
+                        🏢
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            schoolOwner.full_name ||
+                            "Unnamed School Owner"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${escapeHtml(
+                            schoolOwner.role
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(
+                            schoolOwner.phone ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>School:</strong>
+                        ${escapeHtml(
+                            schoolOwner.school_name ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Registered:</strong>
+                        ${createdDate}
+                    </p>
+
+                `;
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "School owner loading error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="card">
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Unable to Load School Owners
+                </h3>
+
+                <p>
+                    We could not retrieve the school owner records.
+                    Please try again.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
     async function loadHeadteachers() {
 
     const container =
