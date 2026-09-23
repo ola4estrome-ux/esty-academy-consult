@@ -2842,6 +2842,173 @@ async function loadEntrepreneurs() {
         }
 
 }
+    async function loadAdministrators() {
+
+    const container =
+        document.getElementById(
+            "administratorsContainer"
+        );
+
+    try {
+
+        const {
+            data: administrators,
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .select(
+                "id, full_name, phone, school_name, role, created_at, updated_at"
+            )
+            .eq(
+                "role",
+                "admin"
+            )
+            .order(
+                "full_name",
+                {
+                    ascending: true
+                }
+            );
+
+        if (error) {
+            throw error;
+        }
+
+        container.innerHTML = "";
+
+        if (
+            !administrators ||
+            administrators.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="card">
+
+                    <div class="card-icon">
+                        👑
+                    </div>
+
+                    <h3>
+                        No Administrators Found
+                    </h3>
+
+                    <p>
+                        There are currently no users
+                        registered with the administrator role.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        administrators.forEach(
+            function(administrator) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "card";
+
+                const createdDate =
+                    administrator.created_at
+                        ? new Date(
+                            administrator.created_at
+                        ).toLocaleDateString(
+                            undefined,
+                            {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                        : "Not available";
+
+                card.innerHTML = `
+
+                    <div class="card-icon">
+                        👑
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(
+                            administrator.full_name ||
+                            "Unnamed Administrator"
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${escapeHtml(
+                            administrator.role
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(
+                            administrator.phone ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>School:</strong>
+                        ${escapeHtml(
+                            administrator.school_name ||
+                            "Not provided"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Registered:</strong>
+                        ${createdDate}
+                    </p>
+
+                `;
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Administrator loading error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="card">
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Unable to Load Administrators
+                </h3>
+
+                <p>
+                    We could not retrieve the administrator records.
+                    Please try again.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
 
 async function loadHeadteachers() {
     const container =
