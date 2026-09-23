@@ -1576,6 +1576,9 @@ const permissions = await getUserPermissions(cleanRole);
             document.getElementById("teacherCentre");
 const learningCentre =
     document.getElementById("learningCentre");
+        if (permissions.includes("access_learning_centre")) {
+    learningCentre.classList.remove("hidden");
+}
 
         const scriptMarkingCard =
             document.getElementById("scriptMarkingCard");
