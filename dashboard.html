@@ -1531,7 +1531,41 @@
 
     }
 
+async function getUserPermissions(role) {
 
+    const cleanRole =
+        normaliseRole(role);
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("role_permissions")
+        .select(`
+            permissions (
+                name
+            )
+        `)
+        .eq("role", cleanRole);
+
+    if (error) {
+
+        console.error(
+            "Permission loading error:",
+            error
+        );
+
+        return [];
+
+    }
+
+    return (data || [])
+        .map(item =>
+            item.permissions?.name
+        )
+        .filter(Boolean);
+
+}
     function configureDashboard(role) {
 
         const cleanRole =
