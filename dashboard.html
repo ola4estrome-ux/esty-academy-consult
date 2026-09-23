@@ -1582,14 +1582,10 @@ const permissions = await getUserPermissions(cleanRole);
 const adminCentre =
     document.getElementById("adminCentre");
         if (
-            cleanRole === "teacher" ||
-            cleanRole === "headteacher" ||
-            cleanRole === "admin"
-        ) {
-
-            teacherCentre.classList.remove("hidden");
-
-        }
+    permissions.includes("access_teaching_centre")
+) {
+    teacherCentre.classList.remove("hidden");
+}
 
 
         if (
