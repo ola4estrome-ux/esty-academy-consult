@@ -1595,13 +1595,11 @@ const adminCentre =
 }
 
 
-        if (cleanRole === "admin") {
-adminCentre.classList.remove("hidden");
-            document.getElementById("welcomeText").textContent =
-                "Welcome to your Esty Academy Consult administration and learning dashboard.";
-
-        }
-
+        if (permissions.includes("manage_users")) {
+    adminCentre.classList.remove("hidden");
+    document.getElementById("welcomeText").textContent =
+        "Welcome to your Esty Academy Consult administration and learning dashboard.";
+}
         else if (
             cleanRole === "teacher" ||
             cleanRole === "headteacher"
