@@ -1588,15 +1588,11 @@ const adminCentre =
 }
 
 
-        if (
-            cleanRole === "teacher" ||
-            cleanRole === "headteacher" ||
-            cleanRole === "admin"
-        ) {
-
-            scriptMarkingCard.classList.remove("hidden");
-
-        }
+       if (
+    permissions.includes("mark_student_scripts")
+) {
+    scriptMarkingCard.classList.remove("hidden");
+}
 
 
         if (cleanRole === "admin") {
