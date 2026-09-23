@@ -1566,7 +1566,7 @@ async function getUserPermissions(role) {
         .filter(Boolean);
 
 }
-    function configureDashboard(role) {
+    async function configureDashboard(role) {
 
         const cleanRole =
             normaliseRole(role);
