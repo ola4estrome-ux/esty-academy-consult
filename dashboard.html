@@ -1589,6 +1589,47 @@ async function getUserPermissions(role) {
         .filter(Boolean);
 
 }
+    async function loadRolePermissions(role) {
+
+    const container =
+        document.getElementById(
+            "permissionManagementContainer"
+        );
+
+    if (!role) {
+        return;
+    }
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("role_permissions")
+        .select(`
+            permission_id,
+            permissions (
+                name,
+                description
+            )
+        `)
+        .eq("role", role);
+
+    if (error) {
+
+        console.error(
+            "Role permission loading error:",
+            error
+        );
+
+        return;
+    }
+
+    console.log(
+        "Permissions for",
+        role,
+        data
+    );
+}
     async function configureDashboard(role) {
 
         const cleanRole =
