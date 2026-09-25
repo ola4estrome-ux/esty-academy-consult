@@ -1581,7 +1581,9 @@ const learningCentre =
         if (permissions.includes("access_learning_centre")) {
     learningCentre.classList.remove("hidden");
 }
-
+if (permissions.includes("access_exams_practice")) {
+    examCentre.classList.remove("hidden");
+}
         const scriptMarkingCard =
             document.getElementById("scriptMarkingCard");
 
