@@ -1589,113 +1589,68 @@ async function getUserPermissions(role) {
         .filter(Boolean);
 
 }
-   async function loadRolePermissions(role) {
+   data.forEach(item => {
 
-    const container =
-        document.getElementById(
-            "permissionManagementContainer"
-        );
+    const permission =
+        item.permissions;
 
-    const existingList =
-        document.getElementById(
-            "rolePermissionsList"
-        );
-
-    if (existingList) {
-        existingList.remove();
-    }
-
-    if (!role) {
-        return;
-    }
-
-    const {
-        data,
-        error
-    } = await supabaseClient
-        .from("role_permissions")
-        .select(`
-            permission_id,
-            permissions (
-                name,
-                description
-            )
-        `)
-        .eq("role", role);
-
-    if (error) {
-
-        console.error(
-            "Role permission loading error:",
-            error
-        );
-
-        return;
-    }
-
-    const list =
+    const row =
         document.createElement("div");
 
-    list.id =
-        "rolePermissionsList";
+    row.style.marginBottom =
+        "15px";
 
-    list.style.marginTop =
-        "20px";
+    const checkbox =
+        document.createElement("input");
 
-    const title =
-        document.createElement("h4");
+    checkbox.type =
+        "checkbox";
 
-    title.textContent =
-        "Permissions Assigned to This Role";
+    checkbox.checked =
+        true;
 
-    list.appendChild(title);
+    checkbox.dataset.permissionId =
+        item.permission_id;
 
-    if (!data || data.length === 0) {
+    checkbox.className =
+        "role-permission-checkbox";
 
-        const message =
-            document.createElement("p");
+    const name =
+        document.createElement("strong");
 
-        message.textContent =
-            "No permissions are currently assigned to this role.";
+    name.textContent =
+        permission?.name ||
+        "Unknown permission";
 
-        list.appendChild(message);
+    const label =
+        document.createElement("label");
 
-    } else {
+    label.style.marginLeft =
+        "8px";
 
-        data.forEach(item => {
+    label.appendChild(name);
 
-            const permission =
-                item.permissions;
+    row.appendChild(checkbox);
 
-            const row =
-                document.createElement("div");
+    row.appendChild(label);
 
-            row.style.marginBottom =
-                "10px";
+    if (permission?.description) {
 
-            const name =
-                document.createElement("strong");
+        const description =
+            document.createElement("div");
 
-            name.textContent =
-                permission?.name ||
-                "Unknown permission";
+        description.textContent =
+            permission.description;
 
-            row.appendChild(name);
+        description.style.marginLeft =
+            "26px";
 
-            if (permission?.description) {
+        row.appendChild(description);
+    }
 
-                const description =
-                    document.createElement("div");
+    list.appendChild(row);
 
-                description.textContent =
-                    permission.description;
-
-                row.appendChild(description);
-            }
-
-            list.appendChild(row);
-
-        });
+});
     }
 
     container.appendChild(list);
