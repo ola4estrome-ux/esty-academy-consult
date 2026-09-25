@@ -1632,6 +1632,9 @@ const adminCentre =
     document.getElementById("welcomeText").textContent =
         "Welcome to your Esty Academy Consult administration and learning dashboard.";
 }
+            if (permissions.includes("manage_roles_permissions")) {
+    permissionManagementContainer.classList.remove("hidden");
+}
         else if (
             cleanRole === "teacher" ||
             cleanRole === "headteacher"
