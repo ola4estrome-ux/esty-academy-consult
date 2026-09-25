@@ -1630,6 +1630,13 @@ async function getUserPermissions(role) {
         data
     );
 }
+    document
+    .getElementById("permissionRoleSelect")
+    .addEventListener("change", function () {
+
+        loadRolePermissions(this.value);
+
+    });
     async function configureDashboard(role) {
 
         const cleanRole =
