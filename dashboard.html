@@ -1589,12 +1589,21 @@ async function getUserPermissions(role) {
         .filter(Boolean);
 
 }
-    async function loadRolePermissions(role) {
+   async function loadRolePermissions(role) {
 
     const container =
         document.getElementById(
             "permissionManagementContainer"
         );
+
+    const existingList =
+        document.getElementById(
+            "rolePermissionsList"
+        );
+
+    if (existingList) {
+        existingList.remove();
+    }
 
     if (!role) {
         return;
@@ -1624,12 +1633,74 @@ async function getUserPermissions(role) {
         return;
     }
 
-    console.log(
-        "Permissions for",
-        role,
-        data
-    );
+    const list =
+        document.createElement("div");
+
+    list.id =
+        "rolePermissionsList";
+
+    list.style.marginTop =
+        "20px";
+
+    const title =
+        document.createElement("h4");
+
+    title.textContent =
+        "Permissions Assigned to This Role";
+
+    list.appendChild(title);
+
+    if (!data || data.length === 0) {
+
+        const message =
+            document.createElement("p");
+
+        message.textContent =
+            "No permissions are currently assigned to this role.";
+
+        list.appendChild(message);
+
+    } else {
+
+        data.forEach(item => {
+
+            const permission =
+                item.permissions;
+
+            const row =
+                document.createElement("div");
+
+            row.style.marginBottom =
+                "10px";
+
+            const name =
+                document.createElement("strong");
+
+            name.textContent =
+                permission?.name ||
+                "Unknown permission";
+
+            row.appendChild(name);
+
+            if (permission?.description) {
+
+                const description =
+                    document.createElement("div");
+
+                description.textContent =
+                    permission.description;
+
+                row.appendChild(description);
+            }
+
+            list.appendChild(row);
+
+        });
+    }
+
+    container.appendChild(list);
 }
+    
     document
     .getElementById("permissionRoleSelect")
     .addEventListener("change", function () {
