@@ -1718,23 +1718,41 @@ const adminCentre =
 
 
         if (permissions.includes("manage_users")) {
+
     adminCentre.classList.remove("hidden");
+
     document.getElementById("welcomeText").textContent =
         "Welcome to your Esty Academy Consult administration and learning dashboard.";
 }
-            if (permissions.includes("manage_roles_permissions")) {
+
+if (permissions.includes("manage_roles_permissions")) {
+
     permissionManagementContainer.classList.remove("hidden");
 }
-        else if (
-            cleanRole === "teacher" ||
-            cleanRole === "headteacher"
-        ) {
 
-            document.getElementById("welcomeText").textContent =
-                "Welcome to your Esty Academy Consult professional development and teaching dashboard.";
+if (
+    !permissions.includes("manage_users") &&
+    (
+        cleanRole === "teacher" ||
+        cleanRole === "headteacher"
+    )
+) {
 
-        }
+    document.getElementById("welcomeText").textContent =
+        "Welcome to your Esty Academy Consult professional development and teaching dashboard.";
 
+}
+
+if (
+    !permissions.includes("manage_users") &&
+    cleanRole !== "teacher" &&
+    cleanRole !== "headteacher"
+) {
+
+    document.getElementById("welcomeText").textContent =
+        "Welcome to your Esty Academy Consult learning dashboard.";
+
+}
         else {
 
             document.getElementById("welcomeText").textContent =
