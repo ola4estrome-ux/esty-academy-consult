@@ -1824,7 +1824,13 @@ if (
 }
       
     }
+document
+    .getElementById("permissionRoleSelect")
+    .addEventListener("change", function () {
 
+        loadRolePermissions(this.value);
+
+    });
 
     async function loadDashboard() {
 
