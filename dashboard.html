@@ -1602,24 +1602,42 @@ async function loadRolePermissions(role) {
     }
 
     const {
-        data,
-        error
+        data: allPermissions,
+        error: permissionsError
+    } = await supabaseClient
+        .from("permissions")
+        .select(`
+            id,
+            name,
+            description
+        `)
+        .order("name");
+
+    if (permissionsError) {
+
+        console.error(
+            "Permissions loading error:",
+            permissionsError
+        );
+
+        return;
+    }
+
+    const {
+        data: assignedPermissions,
+        error: assignedError
     } = await supabaseClient
         .from("role_permissions")
         .select(`
-            permission_id,
-            permissions (
-                name,
-                description
-            )
+            permission_id
         `)
         .eq("role", role);
 
-    if (error) {
+    if (assignedError) {
 
         console.error(
-            "Role permission loading error:",
-            error
+            "Assigned permissions loading error:",
+            assignedError
         );
 
         return;
@@ -1634,6 +1652,14 @@ async function loadRolePermissions(role) {
         oldList.remove();
     }
 
+    const assignedIds =
+        new Set(
+            (assignedPermissions || [])
+                .map(item =>
+                    item.permission_id
+                )
+        );
+
     const list =
         document.createElement("div");
 
@@ -1647,26 +1673,26 @@ async function loadRolePermissions(role) {
         document.createElement("h4");
 
     heading.textContent =
-        "Permissions Assigned to This Role";
+        "Permissions Available to This Role";
 
     list.appendChild(heading);
 
-    if (!data || data.length === 0) {
+    if (
+        !allPermissions ||
+        allPermissions.length === 0
+    ) {
 
         const emptyMessage =
             document.createElement("p");
 
         emptyMessage.textContent =
-            "No permissions assigned to this role.";
+            "No permissions are available.";
 
         list.appendChild(emptyMessage);
 
     } else {
 
-        data.forEach(item => {
-
-            const permission =
-                item.permissions;
+        allPermissions.forEach(permission => {
 
             const row =
                 document.createElement("div");
@@ -1681,37 +1707,39 @@ async function loadRolePermissions(role) {
                 "checkbox";
 
             checkbox.checked =
-                true;
+                assignedIds.has(
+                    permission.id
+                );
 
             checkbox.dataset.permissionId =
-                item.permission_id;
+                permission.id;
 
             checkbox.className =
                 "role-permission-checkbox";
+
             checkbox.addEventListener(
-    "change",
-    async function () {
+                "change",
+                async function () {
 
-        const selectedRole =
-            document.getElementById(
-                "permissionRoleSelect"
-            ).value;
+                    const selectedRole =
+                        document.getElementById(
+                            "permissionRoleSelect"
+                        ).value;
 
-        await saveRolePermission(
-            selectedRole,
-            this.dataset.permissionId,
-            this.checked
-        );
+                    await saveRolePermission(
+                        selectedRole,
+                        this.dataset.permissionId,
+                        this.checked
+                    );
 
-    }
-);
+                }
+            );
 
             const name =
                 document.createElement("strong");
 
             name.textContent =
-                permission?.name ||
-                "Unknown permission";
+                permission.name;
 
             const label =
                 document.createElement("label");
@@ -1725,7 +1753,7 @@ async function loadRolePermissions(role) {
 
             row.appendChild(label);
 
-            if (permission?.description) {
+            if (permission.description) {
 
                 const description =
                     document.createElement("div");
@@ -1746,9 +1774,8 @@ async function loadRolePermissions(role) {
 
     }
 
-   container.appendChild(list);
+    container.appendChild(list);
 }
-
 async function saveRolePermission(role, permissionId, shouldAssign) {
 
     if (!role || !permissionId) {
