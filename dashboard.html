@@ -1729,7 +1729,63 @@ async function loadRolePermissions(role) {
 
     }
 
-    container.appendChild(list);
+   container.appendChild(list);
+}
+
+async function saveRolePermission(role, permissionId, shouldAssign) {
+
+    if (!role || !permissionId) {
+        return;
+    }
+
+    if (shouldAssign) {
+
+        const { error } =
+            await supabaseClient
+                .from("role_permissions")
+                .insert({
+                    role: role,
+                    permission_id: permissionId
+                });
+
+        if (error) {
+
+            console.error(
+                "Permission assignment error:",
+                error
+            );
+
+            alert(
+                "Unable to assign this permission."
+            );
+
+            return;
+        }
+
+    } else {
+
+        const { error } =
+            await supabaseClient
+                .from("role_permissions")
+                .delete()
+                .eq("role", role)
+                .eq("permission_id", permissionId);
+
+        if (error) {
+
+            console.error(
+                "Permission removal error:",
+                error
+            );
+
+            alert(
+                "Unable to remove this permission."
+            );
+
+            return;
+        }
+    }
+
 }
 
 async function configureDashboard(role) {
