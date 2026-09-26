@@ -1656,13 +1656,7 @@ async function getUserPermissions(role) {
     container.appendChild(list);
 }
     
-    document
-    .getElementById("permissionRoleSelect")
-    .addEventListener("change", function () {
-
-        loadRolePermissions(this.value);
-
-    });
+    
     async function configureDashboard(role) {
 
         const cleanRole =
