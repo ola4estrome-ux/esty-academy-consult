@@ -1688,6 +1688,23 @@ async function loadRolePermissions(role) {
 
             checkbox.className =
                 "role-permission-checkbox";
+            checkbox.addEventListener(
+    "change",
+    async function () {
+
+        const selectedRole =
+            document.getElementById(
+                "permissionRoleSelect"
+            ).value;
+
+        await saveRolePermission(
+            selectedRole,
+            this.dataset.permissionId,
+            this.checked
+        );
+
+    }
+);
 
             const name =
                 document.createElement("strong");
