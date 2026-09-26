@@ -1589,8 +1589,150 @@ async function getUserPermissions(role) {
         .filter(Boolean);
 
 }
-    
-    async function configureDashboard(role) {
+
+async function loadRolePermissions(role) {
+
+    const container =
+        document.getElementById(
+            "permissionManagementContainer"
+        );
+
+    if (!role) {
+        return;
+    }
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("role_permissions")
+        .select(`
+            permission_id,
+            permissions (
+                name,
+                description
+            )
+        `)
+        .eq("role", role);
+
+    if (error) {
+
+        console.error(
+            "Role permission loading error:",
+            error
+        );
+
+        return;
+    }
+
+    let oldList =
+        document.getElementById(
+            "rolePermissionsList"
+        );
+
+    if (oldList) {
+        oldList.remove();
+    }
+
+    const list =
+        document.createElement("div");
+
+    list.id =
+        "rolePermissionsList";
+
+    list.style.marginTop =
+        "20px";
+
+    const heading =
+        document.createElement("h4");
+
+    heading.textContent =
+        "Permissions Assigned to This Role";
+
+    list.appendChild(heading);
+
+    if (!data || data.length === 0) {
+
+        const emptyMessage =
+            document.createElement("p");
+
+        emptyMessage.textContent =
+            "No permissions assigned to this role.";
+
+        list.appendChild(emptyMessage);
+
+    } else {
+
+        data.forEach(item => {
+
+            const permission =
+                item.permissions;
+
+            const row =
+                document.createElement("div");
+
+            row.style.marginBottom =
+                "15px";
+
+            const checkbox =
+                document.createElement("input");
+
+            checkbox.type =
+                "checkbox";
+
+            checkbox.checked =
+                true;
+
+            checkbox.dataset.permissionId =
+                item.permission_id;
+
+            checkbox.className =
+                "role-permission-checkbox";
+
+            const name =
+                document.createElement("strong");
+
+            name.textContent =
+                permission?.name ||
+                "Unknown permission";
+
+            const label =
+                document.createElement("label");
+
+            label.style.marginLeft =
+                "8px";
+
+            label.appendChild(name);
+
+            row.appendChild(checkbox);
+
+            row.appendChild(label);
+
+            if (permission?.description) {
+
+                const description =
+                    document.createElement("div");
+
+                description.textContent =
+                    permission.description;
+
+                description.style.marginLeft =
+                    "26px";
+
+                row.appendChild(description);
+
+            }
+
+            list.appendChild(row);
+
+        });
+
+    }
+
+    container.appendChild(list);
+}
+
+async function configureDashboard(role) {
 
         const cleanRole =
             normaliseRole(role);
