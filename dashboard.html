@@ -2888,6 +2888,12 @@ async function loadTeachers() {
     );
 
 }
+    document
+    .getElementById("userManagementSearch")
+    .addEventListener(
+        "input",
+        filterUserManagement
+    );
     async function loadSchoolOwners() {
 
     const container =
