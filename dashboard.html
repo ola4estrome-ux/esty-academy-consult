@@ -2846,14 +2846,19 @@ async function loadTeachers() {
     }
 
 }
-    function filterUserManagement() {
+    async function filterUserManagement() {
 
     const searchInput =
         document.getElementById(
             "userManagementSearch"
         );
 
-    if (!searchInput) {
+    const resultsContainer =
+        document.getElementById(
+            "userManagementSearchResults"
+        );
+
+    if (!searchInput || !resultsContainer) {
         return;
     }
 
@@ -2862,32 +2867,133 @@ async function loadTeachers() {
             .toLowerCase()
             .trim();
 
-    const cards =
-        document.querySelectorAll(
-            "#userManagement .card"
+    if (!searchTerm) {
+
+        resultsContainer.innerHTML = "";
+
+        return;
+    }
+
+    resultsContainer.innerHTML = `
+        <p>
+            Searching users...
+        </p>
+    `;
+
+    const {
+        data: users,
+        error
+    } = await supabaseClient
+        .from("profiles")
+        .select(
+            "id, full_name, phone, school_name, role, created_at"
+        )
+        .or(
+            `full_name.ilike.%${searchTerm}%,phone.ilike.%${searchTerm}%,school_name.ilike.%${searchTerm}%`
+        )
+        .order(
+            "full_name",
+            {
+                ascending: true
+            }
         );
 
-    cards.forEach(
-        function(card) {
+    if (error) {
 
-            const cardText =
-                card.textContent
-                    .toLowerCase();
+        console.error(
+            "User search error:",
+            error
+        );
 
-            if (
-                searchTerm === "" ||
-                cardText.includes(searchTerm)
-            ) {
+        resultsContainer.innerHTML = `
+            <div class="card">
+                <h3>
+                    Unable to Search Users
+                </h3>
 
-                card.style.display =
-                    "";
+                <p>
+                    We could not complete the user search.
+                    Please try again.
+                </p>
+            </div>
+        `;
 
-            } else {
+        return;
+    }
 
-                card.style.display =
-                    "none";
+    if (!users || users.length === 0) {
 
-            }
+        resultsContainer.innerHTML = `
+            <div class="card">
+
+                <h3>
+                    No Users Found
+                </h3>
+
+                <p>
+                    No user matches your search.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    resultsContainer.innerHTML = "";
+
+    users.forEach(
+        function(user) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "card";
+
+            card.style.marginBottom =
+                "15px";
+
+            card.innerHTML = `
+
+                <h3>
+                    ${escapeHtml(
+                        user.full_name ||
+                        "Unnamed User"
+                    )}
+                </h3>
+
+                <p>
+                    <strong>Role:</strong>
+                    ${escapeHtml(
+                        user.role ||
+                        "Not available"
+                    )}
+                </p>
+
+                <p>
+                    <strong>Phone:</strong>
+                    ${escapeHtml(
+                        user.phone ||
+                        "Not provided"
+                    )}
+                </p>
+
+                <p>
+                    <strong>School:</strong>
+                    ${escapeHtml(
+                        user.school_name ||
+                        "Not provided"
+                    )}
+                </p>
+
+            `;
+
+            resultsContainer.appendChild(
+                card
+            );
 
         }
     );
