@@ -2841,6 +2841,53 @@ async function loadTeachers() {
     }
 
 }
+    function filterUserManagement() {
+
+    const searchInput =
+        document.getElementById(
+            "userManagementSearch"
+        );
+
+    if (!searchInput) {
+        return;
+    }
+
+    const searchTerm =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+    const cards =
+        document.querySelectorAll(
+            "#userManagement .card"
+        );
+
+    cards.forEach(
+        function(card) {
+
+            const cardText =
+                card.textContent
+                    .toLowerCase();
+
+            if (
+                searchTerm === "" ||
+                cardText.includes(searchTerm)
+            ) {
+
+                card.style.display =
+                    "";
+
+            } else {
+
+                card.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+}
     async function loadSchoolOwners() {
 
     const container =
