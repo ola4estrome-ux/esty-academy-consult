@@ -4237,140 +4237,113 @@ async function loadHeadteachers() {
         return;
     }
 
-    const roles = [
-        {
-            value: "student",
-            label: "Student / Learner"
-        },
-        {
-            value: "teacher",
-            label: "Teacher / Educator"
-        },
-        {
-            value: "headteacher",
-            label: "Headteacher"
-        },
-        {
-            value: "school_owner",
-            label: "School Owner"
-        },
-        {
-            value: "business_owner",
-            label: "Business Owner"
-        },
-        {
-            value: "entrepreneur",
-            label: "Entrepreneur"
-        },
-        {
-            value: "admin",
-            label: "Administrator"
-        }
-    ];
-
-    const roleList =
-        roles
-            .map(
-                function(role) {
-                    return (
-                        role.value +
-                        " = " +
-                        role.label
-                    );
-                }
-            )
-            .join("\n");
-
-    const newRole =
-        prompt(
-            "Select a new role by entering one of the role values below:\n\n" +
-            roleList +
-            "\n\nCurrent role: " +
-            (user.role || "Not assigned"),
-            user.role || ""
+    const modal =
+        document.getElementById(
+            "roleChangeModal"
         );
 
-    if (newRole === null) {
-        return;
-    }
+    const roleSelect =
+        document.getElementById(
+            "newUserRole"
+        );
 
-    const cleanRole =
-        newRole
-            .trim()
-            .toLowerCase();
-
-    const allowedRoles =
-        roles.map(
-            function(role) {
-                return role.value;
-            }
+    const userName =
+        document.getElementById(
+            "roleChangeUserName"
         );
 
     if (
-        !allowedRoles.includes(
-            cleanRole
-        )
+        !modal ||
+        !roleSelect ||
+        !userName
     ) {
 
         alert(
-            "Invalid role selected."
+            "Role change interface could not be loaded."
         );
 
         return;
     }
 
-    const {
-        error: updateError
-    } = await supabaseClient
-        .from("profiles")
-        .update({
-            role: cleanRole
-        })
-        .eq(
-            "id",
-            userId
+    userName.textContent =
+        "Select a new role for " +
+        (user.full_name || "this user") +
+        ".";
+
+    roleSelect.value =
+        user.role || "student";
+
+    modal.classList.remove("hidden");
+
+    modal.style.display =
+        "flex";
+
+    const saveButton =
+        document.getElementById(
+            "saveNewUserRole"
         );
 
-    if (updateError) {
-
-        console.error(
-            "Role update error:",
-            updateError
+    const cancelButton =
+        document.getElementById(
+            "cancelRoleChange"
         );
 
-        alert(
-            "Unable to change this user's role."
-        );
+    saveButton.onclick =
+        async function() {
 
-        return;
-    }
+            const newRole =
+                roleSelect.value;
 
-    alert(
-        "User role updated successfully."
-    );
+            const {
+                error: updateError
+            } = await supabaseClient
+                .from("profiles")
+                .update({
+                    role: newRole
+                })
+                .eq(
+                    "id",
+                    userId
+                );
 
-    await filterUserManagement();
+            if (updateError) {
 
-}
-    document.addEventListener(
-    "click",
-    function(event) {
+                console.error(
+                    "Role update error:",
+                    updateError
+                );
 
-        const button =
-            event.target.closest(
-                ".view-user-details"
+                alert(
+                    "Unable to change this user's role."
+                );
+
+                return;
+            }
+
+            modal.style.display =
+                "none";
+
+            modal.classList.add("hidden");
+
+            alert(
+                "User role updated successfully."
             );
 
-        if (!button) {
-            return;
-        }
+            await filterUserManagement();
 
-        viewUserDetails(
-            button.dataset.userId
-        );
+        };
 
-    }
-);
+    cancelButton.onclick =
+        function() {
+
+            modal.style.display =
+                "none";
+
+            modal.classList.add("hidden");
+
+        };
+
+}
     loadDashboard();
 loadAssessmentHistory();
  
