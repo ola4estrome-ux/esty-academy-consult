@@ -3923,6 +3923,112 @@ async function loadHeadteachers() {
     );
 
 }
+    async function editUser(userId) {
+
+    if (!userId) {
+        return;
+    }
+
+    const {
+        data: user,
+        error
+    } = await supabaseClient
+        .from("profiles")
+        .select(
+            "id, full_name, phone, school_name, role"
+        )
+        .eq(
+            "id",
+            userId
+        )
+        .single();
+
+    if (error) {
+
+        console.error(
+            "Edit user loading error:",
+            error
+        );
+
+        alert(
+            "Unable to load this user's information."
+        );
+
+        return;
+    }
+
+    const fullName =
+        prompt(
+            "Full Name:",
+            user.full_name || ""
+        );
+
+    if (fullName === null) {
+        return;
+    }
+
+    const phone =
+        prompt(
+            "Phone Number:",
+            user.phone || ""
+        );
+
+    if (phone === null) {
+        return;
+    }
+
+    const schoolName =
+        prompt(
+            "School Name:",
+            user.school_name || ""
+        );
+
+    if (schoolName === null) {
+        return;
+    }
+
+    const {
+        error: updateError
+    } = await supabaseClient
+        .from("profiles")
+        .update({
+            full_name: fullName.trim(),
+            phone: phone.trim(),
+            school_name: schoolName.trim()
+        })
+        .eq(
+            "id",
+            userId
+        );
+
+    if (updateError) {
+
+        console.error(
+            "User update error:",
+            updateError
+        );
+
+        alert(
+            "Unable to update this user."
+        );
+
+        return;
+    }
+
+    alert(
+        "User information updated successfully."
+    );
+
+    const searchInput =
+        document.getElementById(
+            "userManagementSearch"
+        );
+
+    if (searchInput) {
+        await filterUserManagement();
+    }
+
+}
     document.addEventListener(
     "click",
     function(event) {
