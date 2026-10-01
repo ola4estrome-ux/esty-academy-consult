@@ -4295,7 +4295,7 @@ async function loadHeadteachers() {
                 roleSelect.value;
 
             const {
-    data: updatedUser,
+    data: updatedUsers,
     error: updateError
 } = await supabaseClient
     .from("profiles")
@@ -4308,8 +4308,16 @@ async function loadHeadteachers() {
     )
     .select(
         "id, role"
-    )
-    .single();
+    );
+
+if (!updateError) {
+
+    console.log(
+        "Role update response:",
+        updatedUsers
+    );
+
+}
 
             if (updateError) {
 
