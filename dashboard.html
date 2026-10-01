@@ -4125,17 +4125,55 @@ async function loadHeadteachers() {
         return;
     }
 
+    const roles = [
+        {
+            value: "student",
+            label: "Student / Learner"
+        },
+        {
+            value: "teacher",
+            label: "Teacher / Educator"
+        },
+        {
+            value: "headteacher",
+            label: "Headteacher"
+        },
+        {
+            value: "school_owner",
+            label: "School Owner"
+        },
+        {
+            value: "business_owner",
+            label: "Business Owner"
+        },
+        {
+            value: "entrepreneur",
+            label: "Entrepreneur"
+        },
+        {
+            value: "admin",
+            label: "Administrator"
+        }
+    ];
+
+    const roleList =
+        roles
+            .map(
+                function(role) {
+                    return (
+                        role.value +
+                        " = " +
+                        role.label
+                    );
+                }
+            )
+            .join("\n");
+
     const newRole =
         prompt(
-            "Enter the new role:\n\n" +
-            "student\n" +
-            "teacher\n" +
-            "headteacher\n" +
-            "school_owner\n" +
-            "business_owner\n" +
-            "entrepreneur\n" +
-            "admin\n\n" +
-            "Current role: " +
+            "Select a new role by entering one of the role values below:\n\n" +
+            roleList +
+            "\n\nCurrent role: " +
             (user.role || "Not assigned"),
             user.role || ""
         );
@@ -4149,15 +4187,12 @@ async function loadHeadteachers() {
             .trim()
             .toLowerCase();
 
-    const allowedRoles = [
-        "student",
-        "teacher",
-        "headteacher",
-        "school_owner",
-        "business_owner",
-        "entrepreneur",
-        "admin"
-    ];
+    const allowedRoles =
+        roles.map(
+            function(role) {
+                return role.value;
+            }
+        );
 
     if (
         !allowedRoles.includes(
