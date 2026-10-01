@@ -3908,6 +3908,25 @@ async function loadHeadteachers() {
     );
 
 }
+    document.addEventListener(
+    "click",
+    function(event) {
+
+        const button =
+            event.target.closest(
+                ".view-user-details"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        viewUserDetails(
+            button.dataset.userId
+        );
+
+    }
+);
     loadDashboard();
 loadAssessmentHistory();
  
