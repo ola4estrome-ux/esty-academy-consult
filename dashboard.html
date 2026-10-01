@@ -2488,6 +2488,40 @@ if (sectionId === "headteacherManagement") {
 }
     }
 );
+    document.addEventListener(
+    "click",
+    function(event) {
+
+        const viewButton =
+            event.target.closest(
+                ".view-user-details"
+            );
+
+        if (viewButton) {
+
+            viewUserDetails(
+                viewButton.dataset.userId
+            );
+
+            return;
+        }
+
+
+        const editButton =
+            event.target.closest(
+                ".edit-user"
+            );
+
+        if (editButton) {
+
+            editUser(
+                editButton.dataset.userId
+            );
+
+        }
+
+    }
+);
 async function loadTeachers() {
 
     const container =
