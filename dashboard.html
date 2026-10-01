@@ -4078,6 +4078,120 @@ async function loadHeadteachers() {
     }
 
 }
+    async function changeUserRole(userId) {
+
+    if (!userId) {
+        return;
+    }
+
+    const {
+        data: user,
+        error
+    } = await supabaseClient
+        .from("profiles")
+        .select(
+            "id, full_name, role"
+        )
+        .eq(
+            "id",
+            userId
+        )
+        .single();
+
+    if (error) {
+
+        console.error(
+            "Role loading error:",
+            error
+        );
+
+        alert(
+            "Unable to load this user's role."
+        );
+
+        return;
+    }
+
+    const newRole =
+        prompt(
+            "Enter the new role:\n\n" +
+            "student\n" +
+            "teacher\n" +
+            "headteacher\n" +
+            "school_owner\n" +
+            "business_owner\n" +
+            "entrepreneur\n" +
+            "admin\n\n" +
+            "Current role: " +
+            (user.role || "Not assigned"),
+            user.role || ""
+        );
+
+    if (newRole === null) {
+        return;
+    }
+
+    const cleanRole =
+        newRole
+            .trim()
+            .toLowerCase();
+
+    const allowedRoles = [
+        "student",
+        "teacher",
+        "headteacher",
+        "school_owner",
+        "business_owner",
+        "entrepreneur",
+        "admin"
+    ];
+
+    if (
+        !allowedRoles.includes(
+            cleanRole
+        )
+    ) {
+
+        alert(
+            "Invalid role selected."
+        );
+
+        return;
+    }
+
+    const {
+        error: updateError
+    } = await supabaseClient
+        .from("profiles")
+        .update({
+            role: cleanRole
+        })
+        .eq(
+            "id",
+            userId
+        );
+
+    if (updateError) {
+
+        console.error(
+            "Role update error:",
+            updateError
+        );
+
+        alert(
+            "Unable to change this user's role."
+        );
+
+        return;
+    }
+
+    alert(
+        "User role updated successfully."
+    );
+
+    await filterUserManagement();
+
+}
     document.addEventListener(
     "click",
     function(event) {
