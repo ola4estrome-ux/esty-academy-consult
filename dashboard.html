@@ -2702,6 +2702,30 @@ if (sectionId === "headteacherManagement") {
 
     }
 );
+    document
+    .getElementById("closeUserDetails")
+    .addEventListener(
+        "click",
+        function() {
+
+            const modal =
+                document.getElementById(
+                    "userDetailsModal"
+                );
+
+            if (!modal) {
+                return;
+            }
+
+            modal.style.display =
+                "none";
+
+            modal.classList.add(
+                "hidden"
+            );
+
+        }
+    );
 async function loadTeachers() {
 
     const container =
