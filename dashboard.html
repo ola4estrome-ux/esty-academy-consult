@@ -3862,6 +3862,52 @@ async function loadHeadteachers() {
     }
 
 }
+    async function viewUserDetails(userId) {
+
+    if (!userId) {
+        return;
+    }
+
+    const {
+        data: user,
+        error
+    } = await supabaseClient
+        .from("profiles")
+        .select(
+            "id, full_name, phone, school_name, role, created_at, updated_at"
+        )
+        .eq(
+            "id",
+            userId
+        )
+        .single();
+
+    if (error) {
+
+        console.error(
+            "User details error:",
+            error
+        );
+
+        alert(
+            "Unable to load this user's details."
+        );
+
+        return;
+    }
+
+    alert(
+        "Name: " +
+        (user.full_name || "Not provided") +
+        "\n\nRole: " +
+        (user.role || "Not provided") +
+        "\n\nPhone: " +
+        (user.phone || "Not provided") +
+        "\n\nSchool: " +
+        (user.school_name || "Not provided")
+    );
+
+}
     loadDashboard();
 loadAssessmentHistory();
  
