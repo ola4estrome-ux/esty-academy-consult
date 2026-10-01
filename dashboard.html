@@ -4295,16 +4295,21 @@ async function loadHeadteachers() {
                 roleSelect.value;
 
             const {
-                error: updateError
-            } = await supabaseClient
-                .from("profiles")
-                .update({
-                    role: newRole
-                })
-                .eq(
-                    "id",
-                    userId
-                );
+    data: updatedUser,
+    error: updateError
+} = await supabaseClient
+    .from("profiles")
+    .update({
+        role: newRole
+    })
+    .eq(
+        "id",
+        userId
+    )
+    .select(
+        "id, role"
+    )
+    .single();
 
             if (updateError) {
 
