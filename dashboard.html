@@ -2988,7 +2988,20 @@ async function loadTeachers() {
                         "Not provided"
                     )}
                 </p>
-
+<button
+    type="button"
+    class="view-user-details"
+    data-user-id="${user.id}"
+    style="
+        margin-top: 10px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    "
+>
+    View Details
+</button>
             `;
 
             resultsContainer.appendChild(
