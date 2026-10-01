@@ -2521,6 +2521,18 @@ if (sectionId === "headteacherManagement") {
         }
 
     }
+        const roleButton =
+    event.target.closest(
+        ".change-user-role"
+    );
+
+if (roleButton) {
+
+    changeUserRole(
+        roleButton.dataset.userId
+    );
+
+}
 );
 async function loadTeachers() {
 
