@@ -2512,7 +2512,7 @@ if (sectionId === "headteacherManagement") {
                 ".edit-user"
             );
 
-        if (editButton) {
+            if (editButton) {
 
             editUser(
                 editButton.dataset.userId
@@ -2520,19 +2520,20 @@ if (sectionId === "headteacherManagement") {
 
         }
 
-    }
         const roleButton =
-    event.target.closest(
-        ".change-user-role"
-    );
+            event.target.closest(
+                ".change-user-role"
+            );
 
-if (roleButton) {
+        if (roleButton) {
 
-    changeUserRole(
-        roleButton.dataset.userId
-    );
+            changeUserRole(
+                roleButton.dataset.userId
+            );
 
-}
+        }
+
+    }
 );
 async function loadTeachers() {
 
