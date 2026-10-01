@@ -4106,11 +4106,41 @@ async function loadHeadteachers() {
     }
 
 }
-    async function viewUserDetails(userId) {
+   async function viewUserDetails(userId) {
 
     if (!userId) {
         return;
     }
+
+    const modal =
+        document.getElementById(
+            "userDetailsModal"
+        );
+
+    const content =
+        document.getElementById(
+            "userDetailsContent"
+        );
+
+    if (!modal || !content) {
+
+        alert(
+            "User details interface could not be loaded."
+        );
+
+        return;
+    }
+
+    content.innerHTML = `
+        <p>
+            Loading user details...
+        </p>
+    `;
+
+    modal.classList.remove("hidden");
+
+    modal.style.display =
+        "flex";
 
     const {
         data: user,
@@ -4133,23 +4163,74 @@ async function loadHeadteachers() {
             error
         );
 
-        alert(
-            "Unable to load this user's details."
-        );
+        content.innerHTML = `
+            <p>
+                Unable to load this user's details.
+            </p>
+        `;
 
         return;
     }
 
-    alert(
-        "Name: " +
-        (user.full_name || "Not provided") +
-        "\n\nRole: " +
-        (user.role || "Not provided") +
-        "\n\nPhone: " +
-        (user.phone || "Not provided") +
-        "\n\nSchool: " +
-        (user.school_name || "Not provided")
-    );
+    const registeredDate =
+        user.created_at
+            ? new Date(
+                user.created_at
+            ).toLocaleString()
+            : "Not available";
+
+    const updatedDate =
+        user.updated_at
+            ? new Date(
+                user.updated_at
+            ).toLocaleString()
+            : "Not available";
+
+    content.innerHTML = `
+
+        <p>
+            <strong>Full Name:</strong><br>
+            ${escapeHtml(
+                user.full_name ||
+                "Not provided"
+            )}
+        </p>
+
+        <p>
+            <strong>Role:</strong><br>
+            ${escapeHtml(
+                user.role ||
+                "Not assigned"
+            )}
+        </p>
+
+        <p>
+            <strong>Phone:</strong><br>
+            ${escapeHtml(
+                user.phone ||
+                "Not provided"
+            )}
+        </p>
+
+        <p>
+            <strong>School:</strong><br>
+            ${escapeHtml(
+                user.school_name ||
+                "Not provided"
+            )}
+        </p>
+
+        <p>
+            <strong>Registered:</strong><br>
+            ${registeredDate}
+        </p>
+
+        <p>
+            <strong>Last Profile Update:</strong><br>
+            ${updatedDate}
+        </p>
+
+    `;
 
 }
     async function editUser(userId) {
