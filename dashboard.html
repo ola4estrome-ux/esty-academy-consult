@@ -3205,6 +3205,40 @@ async function loadTeachers() {
     }
 
 }
+    function getReadableRole(role) {
+
+    const roleNames = {
+
+        student:
+            "Student / Learner",
+
+        teacher:
+            "Teacher / Educator",
+
+        headteacher:
+            "Headteacher",
+
+        school_owner:
+            "School Owner",
+
+        business_owner:
+            "Business Owner",
+
+        entrepreneur:
+            "Entrepreneur",
+
+        admin:
+            "Administrator"
+
+    };
+
+    return (
+        roleNames[role] ||
+        role ||
+        "Not assigned"
+    );
+
+}
     async function filterUserManagement() {
 
     const searchInput =
