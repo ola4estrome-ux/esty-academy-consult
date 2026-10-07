@@ -3324,13 +3324,12 @@ async function loadTeachers() {
                     )}
                 </h3>
 
-                <p>
-                    <strong>Role:</strong>
-                    ${escapeHtml(
-                        user.role ||
-                        "Not available"
-                    )}
-                </p>
+               <p>
+    <strong>Role:</strong>
+    ${escapeHtml(
+        getReadableRole(user.role)
+    )}
+</p>
 
                 <p>
                     <strong>Phone:</strong>
