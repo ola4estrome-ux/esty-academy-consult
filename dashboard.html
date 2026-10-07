@@ -4390,7 +4390,7 @@ async function loadHeadteachers() {
     } = await supabaseClient
         .from("profiles")
         .select(
-            "id, full_name, phone, school_name, role"
+            "id, full_name, phone, school_name"
         )
         .eq(
             "id",
@@ -4412,76 +4412,139 @@ async function loadHeadteachers() {
         return;
     }
 
-    const fullName =
-        prompt(
-            "Full Name:",
-            user.full_name || ""
+    const modal =
+        document.getElementById(
+            "editUserModal"
         );
 
-    if (fullName === null) {
-        return;
-    }
-
-    const phone =
-        prompt(
-            "Phone Number:",
-            user.phone || ""
+    const fullNameInput =
+        document.getElementById(
+            "editUserFullName"
         );
 
-    if (phone === null) {
-        return;
-    }
-
-    const schoolName =
-        prompt(
-            "School Name:",
-            user.school_name || ""
+    const phoneInput =
+        document.getElementById(
+            "editUserPhone"
         );
 
-    if (schoolName === null) {
-        return;
-    }
-
-    const {
-        error: updateError
-    } = await supabaseClient
-        .from("profiles")
-        .update({
-            full_name: fullName.trim(),
-            phone: phone.trim(),
-            school_name: schoolName.trim()
-        })
-        .eq(
-            "id",
-            userId
+    const schoolInput =
+        document.getElementById(
+            "editUserSchool"
         );
 
-    if (updateError) {
-
-        console.error(
-            "User update error:",
-            updateError
-        );
+    if (
+        !modal ||
+        !fullNameInput ||
+        !phoneInput ||
+        !schoolInput
+    ) {
 
         alert(
-            "Unable to update this user."
+            "Edit user interface could not be loaded."
         );
 
         return;
     }
 
-    alert(
-        "User information updated successfully."
-    );
+    fullNameInput.value =
+        user.full_name || "";
 
-    const searchInput =
+    phoneInput.value =
+        user.phone || "";
+
+    schoolInput.value =
+        user.school_name || "";
+
+    modal.classList.remove("hidden");
+
+    modal.style.display =
+        "flex";
+
+    const saveButton =
         document.getElementById(
-            "userManagementSearch"
+            "saveEditedUser"
         );
 
-    if (searchInput) {
-        await filterUserManagement();
-    }
+    const cancelButton =
+        document.getElementById(
+            "cancelEditUser"
+        );
+
+    saveButton.onclick =
+        async function() {
+
+            const fullName =
+                fullNameInput.value.trim();
+
+            const phone =
+                phoneInput.value.trim();
+
+            const schoolName =
+                schoolInput.value.trim();
+
+            if (!fullName) {
+
+                alert(
+                    "Please enter the user's full name."
+                );
+
+                return;
+            }
+
+            const {
+                error: updateError
+            } = await supabaseClient
+                .from("profiles")
+                .update({
+                    full_name: fullName,
+                    phone: phone,
+                    school_name: schoolName
+                })
+                .eq(
+                    "id",
+                    userId
+                );
+
+            if (updateError) {
+
+                console.error(
+                    "User update error:",
+                    updateError
+                );
+
+                alert(
+                    "Unable to update this user."
+                );
+
+                return;
+            }
+
+            modal.style.display =
+                "none";
+
+            modal.classList.add(
+                "hidden"
+            );
+
+            alert(
+                "User information updated successfully."
+            );
+
+            await filterUserManagement();
+
+        };
+
+    cancelButton.onclick =
+        function() {
+
+            modal.style.display =
+                "none";
+
+            modal.classList.add(
+                "hidden"
+            );
+
+        };
 
 }
     async function changeUserRole(userId) {
