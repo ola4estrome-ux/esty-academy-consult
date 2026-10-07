@@ -2884,6 +2884,132 @@ if (sectionId === "headteacherManagement") {
 
         }
     );
+    async function loadCourses() {
+
+    const container =
+        document.getElementById(
+            "courseManagementContent"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="card">
+            <p>
+                Loading courses...
+            </p>
+        </div>
+    `;
+
+    const {
+        data: courses,
+        error
+    } = await supabaseClient
+        .from("courses")
+        .select(
+            "id, title, price, is_published"
+        )
+        .order(
+            "title",
+            {
+                ascending: true
+            }
+        );
+
+    if (error) {
+
+        console.error(
+            "Course loading error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="card">
+                <h3>
+                    Unable to Load Courses
+                </h3>
+
+                <p>
+                    We could not load the courses
+                    at this time.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    if (!courses || courses.length === 0) {
+
+        container.innerHTML = `
+            <div class="card">
+                <h3>
+                    No Courses Yet
+                </h3>
+
+                <p>
+                    No courses have been created
+                    on the platform yet.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    courses.forEach(
+        function(course) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "card";
+
+            card.style.marginBottom =
+                "15px";
+
+            card.innerHTML = `
+
+                <h3>
+                    ${escapeHtml(
+                        course.title ||
+                        "Untitled Course"
+                    )}
+                </h3>
+
+                <p>
+                    <strong>Price:</strong>
+                    ₦${Number(
+                        course.price || 0
+                    ).toLocaleString()}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    ${
+                        course.is_published
+                            ? "Published"
+                            : "Draft"
+                    }
+                </p>
+
+            `;
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
 async function loadTeachers() {
 
     const container =
