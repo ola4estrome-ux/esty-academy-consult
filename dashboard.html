@@ -2275,7 +2275,25 @@ document
         loadRolePermissions(this.value);
 
     });
+document.addEventListener(
+    "click",
+    function(event) {
 
+        const button =
+            event.target.closest(
+                ".manage-course-button"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        openCourseManager(
+            button.dataset.courseId
+        );
+
+    }
+);
     async function loadDashboard() {
 
         try {
@@ -2884,6 +2902,19 @@ if (sectionId === "headteacherManagement") {
 
         }
     );
+    
+function openCourseManager(courseId) {
+
+    if (!courseId) {
+        return;
+    }
+
+    alert(
+        "Course selected successfully. Course ID: " +
+        courseId
+    );
+
+}
     async function loadCourses() {
 
     const container =
