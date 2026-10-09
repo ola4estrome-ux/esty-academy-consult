@@ -2361,6 +2361,19 @@ document.addEventListener(
 
     }
 );
+    
+document
+    .getElementById("backToCourses")
+    .addEventListener(
+        "click",
+        function() {
+
+            showSection("courseManagement");
+
+            loadCourses();
+
+        }
+    );
     async function loadDashboard() {
 
         try {
