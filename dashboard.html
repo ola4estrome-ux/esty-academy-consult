@@ -2294,6 +2294,26 @@ document.addEventListener(
 
     }
 );
+    
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const button =
+            event.target.closest(
+                ".manage-course-button"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        openCourseManager(
+            button.dataset.courseId
+        );
+
+    }
+);
     async function loadDashboard() {
 
         try {
