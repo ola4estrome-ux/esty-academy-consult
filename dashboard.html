@@ -2975,33 +2975,48 @@ if (sectionId === "headteacherManagement") {
             card.style.marginBottom =
                 "15px";
 
-            card.innerHTML = `
+           
+card.innerHTML = `
 
-                <h3>
-                    ${escapeHtml(
-                        course.title ||
-                        "Untitled Course"
-                    )}
-                </h3>
+    <h3>
+        ${escapeHtml(
+            course.title ||
+            "Untitled Course"
+        )}
+    </h3>
 
-                <p>
-                    <strong>Price:</strong>
-                    ₦${Number(
-                        course.price || 0
-                    ).toLocaleString()}
-                </p>
+    <p>
+        <strong>Price:</strong>
+        ₦${Number(
+            course.price || 0
+        ).toLocaleString()}
+    </p>
 
-                <p>
-                    <strong>Status:</strong>
-                    ${
-                        course.is_published
-                            ? "Published"
-                            : "Draft"
-                    }
-                </p>
+    <p>
+        <strong>Status:</strong>
+        ${
+            course.is_published
+                ? "Published"
+                : "Draft"
+        }
+    </p>
 
-            `;
+    <button
+        type="button"
+        class="manage-course-button"
+        data-course-id="${course.id}"
+        style="
+            margin-top: 12px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        "
+    >
+        Manage Course
+    </button>
 
+`;
             container.appendChild(
                 card
             );
