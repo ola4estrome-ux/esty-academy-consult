@@ -2970,16 +2970,88 @@ if (sectionId === "headteacherManagement") {
         }
     );
     
-function openCourseManager(courseId) {
+
+async function openCourseManager(courseId) {
 
     if (!courseId) {
         return;
     }
 
-    alert(
-        "Course selected successfully. Course ID: " +
-        courseId
-    );
+    const {
+        data: course,
+        error
+    } = await supabaseClient
+        .from("courses")
+        .select("id, title, price, is_published")
+        .eq("id", courseId)
+        .single();
+
+    if (error) {
+
+        console.error(
+            "Course details loading error:",
+            error
+        );
+
+        alert(
+            "Unable to load this course."
+        );
+
+        return;
+    }
+
+    const title =
+        document.getElementById(
+            "courseEditorTitle"
+        );
+
+    const content =
+        document.getElementById(
+            "courseEditorContent"
+        );
+
+    if (!title || !content) {
+
+        alert(
+            "Course workspace could not be loaded."
+        );
+
+        return;
+    }
+
+    title.textContent =
+        course.title || "Untitled Course";
+
+    content.innerHTML = `
+        <div class="card">
+
+            <h3>Course Details</h3>
+
+            <p>
+                <strong>Course:</strong>
+                ${escapeHtml(
+                    course.title || "Untitled Course"
+                )}
+            </p>
+
+            <p>
+                <strong>Price:</strong>
+                ₦${Number(
+                    course.price || 0
+                ).toLocaleString()}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                ${course.is_published
+                    ? "Published"
+                    : "Draft"}
+            </p>
+
+        </div>
+    `;
+
+    showSection("courseEditor");
 
 }
     async function loadCourses() {
