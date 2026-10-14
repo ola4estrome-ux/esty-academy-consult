@@ -2967,88 +2967,99 @@ if (sectionId === "headteacherManagement") {
     );
     
 
-async function openCourseManager(courseId) {
-
-    if (!courseId) {
-        return;
-    }
-
-    const {
-        data: course,
-        error
-    } = await supabaseClient
-        .from("courses")
-        .select("id, title, price, is_published")
-        .eq("id", courseId)
-        .single();
-
-    if (error) {
-
-        console.error(
-            "Course details loading error:",
-            error
-        );
-
-        alert(
-            "Unable to load this course."
-        );
-
-        return;
-    }
-
-    const title =
-        document.getElementById(
-            "courseEditorTitle"
-        );
+async function loadCourseModules(courseId) {
 
     const content =
         document.getElementById(
             "courseEditorContent"
         );
 
-    if (!title || !content) {
+    if (!content || !courseId) {
+        return;
+    }
 
-        alert(
-            "Course workspace could not be loaded."
+    content.innerHTML = `
+        <div class="card">
+            <p>Loading course modules...</p>
+        </div>
+    `;
+
+    const {
+        data: modules,
+        error
+    } = await supabaseClient
+        .from("course_modules")
+        .select(
+            "id, title, description, module_order"
+        )
+        .eq("course_id", courseId)
+        .order(
+            "module_order",
+            {
+                ascending: true
+            }
         );
+
+    if (error) {
+        console.error(
+            "Module loading error:",
+            error
+        );
+
+        content.innerHTML = `
+            <div class="card">
+                <h3>Unable to Load Modules</h3>
+                <p>
+                    We could not load the modules
+                    for this course.
+                </p>
+            </div>
+        `;
 
         return;
     }
 
-    title.textContent =
-        course.title || "Untitled Course";
-
-    content.innerHTML = `
+    let html = `
         <div class="card">
-
-            <h3>Course Details</h3>
-
+            <h3>Course Modules</h3>
             <p>
-                <strong>Course:</strong>
-                ${escapeHtml(
-                    course.title || "Untitled Course"
-                )}
+                ${modules.length} module(s) found.
             </p>
-
-            <p>
-                <strong>Price:</strong>
-                ₦${Number(
-                    course.price || 0
-                ).toLocaleString()}
-            </p>
-
-            <p>
-                <strong>Status:</strong>
-                ${course.is_published
-                    ? "Published"
-                    : "Draft"}
-            </p>
-
         </div>
     `;
 
-    showSection("courseEditor");
+    if (modules.length === 0) {
+        html += `
+            <div class="card">
+                <p>
+                    No modules have been added
+                    to this course yet.
+                </p>
+            </div>
+        `;
+    } else {
+        modules.forEach(function(module) {
+            html += `
+                <div class="card"
+                    style="margin-bottom: 15px;">
 
+                    <h3>
+                        Module ${module.module_order}:
+                        ${escapeHtml(module.title)}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(
+                            module.description || ""
+                        )}
+                    </p>
+
+                </div>
+            `;
+        });
+    }
+
+    content.innerHTML = html;
 }
     
 async function loadCourseModules(courseId) {
