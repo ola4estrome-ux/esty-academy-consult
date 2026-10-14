@@ -3062,44 +3062,38 @@ async function loadCourseModules(courseId) {
         return;
     }
 
-    content.innerHTML = `
+        content.innerHTML = `
         <div class="card">
+            <h3>Course Details</h3>
+
+            <p>
+                <strong>Course:</strong>
+                ${escapeHtml(
+                    course.title || "Untitled Course"
+                )}
+            </p>
+
+            <p>
+                <strong>Price:</strong>
+                ₦${Number(
+                    course.price || 0
+                ).toLocaleString()}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                ${course.is_published
+                    ? "Published"
+                    : "Draft"}
+            </p>
+
             <p>Loading course modules...</p>
         </div>
     `;
 
-    const {
-        data: modules,
-        error
-    } = await supabaseClient
-        .from("course_modules")
-        .select(
-            "id, title, description, module_order"
-        )
-        .eq("course_id", courseId)
-        .order(
-            "module_order",
-            {
-                ascending: true
-            }
-        );
+    showSection("courseEditor");
 
-    if (error) {
-
-        console.error(
-            "Module loading error:",
-            error
-        );
-
-        content.innerHTML = `
-            <div class="card">
-                <h3>Unable to Load Modules</h3>
-                <p>
-                    We could not load the modules
-                    for this course.
-                </p>
-            </div>
-        `;
+    await loadCourseModules(course.id);
 
         return;
     }
